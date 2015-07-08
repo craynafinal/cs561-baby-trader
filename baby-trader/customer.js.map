@@ -1,0 +1,1 @@
+{"version":3,"file":"customer.js","sourceRoot":"","sources":["customer.ts"],"names":["Customer","Customer.constructor","Customer.greet"],"mappings":"AAAA;IAMIA,kBAAYA,OAAeA;QACvBC,0BAA0BA;IAC9BA,CAACA;IACDD,wBAAKA,GAALA;QACIE,mCAAmCA;IACvCA,CAACA;IACLF,eAACA;AAADA,CAACA,AAZD,IAYC"}

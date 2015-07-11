@@ -28,10 +28,16 @@
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="attribute.ts" />
     <TypeScriptCompile Include="baby.ts" />
+    <TypeScriptCompile Include="boot.ts" />
+    <TypeScriptCompile Include="const.ts" />
     <TypeScriptCompile Include="customer.ts" />
+    <TypeScriptCompile Include="play.ts" />
+    <TypeScriptCompile Include="global.ts" />
     <TypeScriptCompile Include="phaser\p2.d.ts" />
     <TypeScriptCompile Include="phaser\phaser.d.ts" />
     <TypeScriptCompile Include="phaser\pixi.d.ts" />
+    <TypeScriptCompile Include="preload.ts" />
+    <TypeScriptCompile Include="title.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="web.Debug.config">

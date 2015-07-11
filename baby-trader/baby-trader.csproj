@@ -26,6 +26,9 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="attribute.ts" />
+    <TypeScriptCompile Include="baby.ts" />
+    <TypeScriptCompile Include="customer.ts" />
     <TypeScriptCompile Include="phaser\p2.d.ts" />
     <TypeScriptCompile Include="phaser\phaser.d.ts" />
     <TypeScriptCompile Include="phaser\pixi.d.ts" />

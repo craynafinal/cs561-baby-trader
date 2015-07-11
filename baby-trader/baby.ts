@@ -7,7 +7,8 @@
     constructor(message: string) {
         //this.greeting = message;
     }
-    greet() {
+    printSprite() {
         //return "Hello, " + this.greeting;
     }
+
 }

@@ -1,7 +1,10 @@
-﻿class Customer {
+﻿enum CustomerStatus { Buy, Sell, Return }
+
+class Customer {
     money: number;
     hitPoint: number;
     angry: boolean;
+    status: CustomerStatus;
     attributes: Attribute[];
 
     constructor(message: string) {

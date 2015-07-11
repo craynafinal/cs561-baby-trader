@@ -2,7 +2,7 @@ var Baby = (function () {
     function Baby(message) {
         //this.greeting = message;
     }
-    Baby.prototype.greet = function () {
+    Baby.prototype.printSprite = function () {
         //return "Hello, " + this.greeting;
     };
     return Baby;

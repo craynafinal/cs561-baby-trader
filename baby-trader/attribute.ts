@@ -1,6 +1,7 @@
 ﻿class Attribute {
     name: string;
-    
+    description: string;
+
     constructor(message: string) {
         //this.greeting = message;
     }

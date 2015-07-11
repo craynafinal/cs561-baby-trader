@@ -1,1 +1,1 @@
-{"version":3,"file":"attribute.js","sourceRoot":"","sources":["attribute.ts"],"names":["Attribute","Attribute.constructor","Attribute.greet"],"mappings":"AAAA;IAGIA,mBAAYA,OAAeA;QACvBC,0BAA0BA;IAC9BA,CAACA;IACDD,yBAAKA,GAALA;QACIE,mCAAmCA;IACvCA,CAACA;IACLF,gBAACA;AAADA,CAACA,AATD,IASC"}
+{"version":3,"file":"attribute.js","sourceRoot":"","sources":["attribute.ts"],"names":["Attribute","Attribute.constructor","Attribute.greet"],"mappings":"AAAA;IAIIA,mBAAYA,OAAeA;QACvBC,0BAA0BA;IAC9BA,CAACA;IACDD,yBAAKA,GAALA;QACIE,mCAAmCA;IACvCA,CAACA;IACLF,gBAACA;AAADA,CAACA,AAVD,IAUC"}

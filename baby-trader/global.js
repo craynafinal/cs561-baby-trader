@@ -10,7 +10,7 @@ var global_bgm = null;
 function playBackgroundSound(game, music) {
     global_bgm = game.add.audio(music);
     global_bgm.loop = true;
-    global_bgm.play();
+    //global_bgm.play();
 }
 function stopBackgroundSound() {
     global_bgm.stop();

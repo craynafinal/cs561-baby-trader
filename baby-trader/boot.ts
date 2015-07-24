@@ -18,6 +18,11 @@ module BabyTrader {
         }
 
         create() {
+            //this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            //this.scale.setMinMax(480, 260, 1024, 768);
+            this.scale.pageAlignHorizontally = true;
+            this.scale.pageAlignVertically = true;
+            this.game.physics.startSystem(Phaser.Physics.ARCADE);
             this.game.state.start("preload");
         }
 

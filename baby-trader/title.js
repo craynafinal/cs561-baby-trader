@@ -67,7 +67,6 @@ var BabyTrader;
         textButtonElement.events.onInputUp.add(function () {
             method(game);
             if (!sound.isPlaying) {
-                sound.play();
             }
         });
     }

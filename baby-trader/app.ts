@@ -20,6 +20,7 @@ module BabyTrader {
         create() {
             this.game.state.add("boot", BabyTrader.Boot, true);
             this.game.state.add("preload", BabyTrader.Preload, true);
+            this.game.state.add("prologue", BabyTrader.Prologue, true);
             this.game.state.add("title", BabyTrader.Title, true);
             this.game.state.add("play", BabyTrader.Play, true);
             this.game.state.start("boot");

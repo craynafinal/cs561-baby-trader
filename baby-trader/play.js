@@ -29,6 +29,10 @@ var BabyTrader;
             this.speed = 250;
             this.coins = null;
             this.key_pause = null;
+            this.dialogLocation = null;
+            this.eventLock = false;
+            this.pauseOverlay = null;
+            this.pauseState = false;
         }
         Play.prototype.preload = function () {
         };
@@ -38,33 +42,61 @@ var BabyTrader;
             this.playerSetup('spriteSheet_player_animation_horizontal', 0, 0, 0);
             this.playerSetupAnimation();
             this.createCoins();
-            this.setupKeyboardHotkeys();
-            // Input Setup
+            // setup keys
+            setupKeyboardHotkeys(this.game, this.key_pause, Phaser.Keyboard.ESC, this.pauseOrResumeGame, this);
+            setupKeyboardHotkeys(this.game, this.key_pause, Phaser.Keyboard.S, this.saveGameState, this);
+            setupKeyboardHotkeys(this.game, this.key_pause, Phaser.Keyboard.L, this.loadGameState, this);
+            // input setup
             this.cursors = this.game.input.keyboard.createCursorKeys();
         };
         Play.prototype.update = function () {
             this.game.physics.arcade.collide(this.player, this.blockedLayer);
             this.playerControl();
-            this.game.physics.arcade.overlap(this.player, this.coins, this.collect, null, this);
+            this.game.physics.arcade.overlap(this.player, this.coins, this.startDialog, null, this);
         };
-        //**********************************************************************************************************
-        Play.prototype.setupKeyboardHotkeys = function () {
-            this.key_pause = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC);
-            this.key_pause.onDown.add(this.pauseOrResumeGame, this);
-            this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.ESC);
+        Play.prototype.saveGameState = function () {
+            BabyTrader.Storage.saveGame(["test1", "test2"]);
+        };
+        Play.prototype.loadGameState = function () {
+            console.log(BabyTrader.Storage.loadGame());
         };
         Play.prototype.pauseOrResumeGame = function () {
-            if (!this.game.paused) {
-                this.game.paused = true;
+            if (!this.pauseOverlay) {
+                this.pauseState = true;
+                this.pauseGame();
             }
             else {
-                this.game.paused = false;
+                this.pauseState = false;
+                this.resumeGame();
             }
         };
-        Play.prototype.collect = function () {
-            var text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, "- phaser -\nclick to remove", { font: "65px Arial", fill: "#ff0044", align: "center" });
-            //text.anchor.setTo(0.5, 0.5);
-            //this.game.input.onDown.addOnce(null, this);
+        Play.prototype.resumeGame = function () {
+            this.pauseOverlay.destroy();
+            this.pauseOverlay = null;
+        };
+        Play.prototype.pauseGame = function () {
+            /*
+            var graphicOverlay = new Phaser.Graphics(this.game, 0, 0);
+            graphicOverlay.beginFill(0x000000, 0.7);
+            graphicOverlay.drawRect(0, 0, 800, 600);
+            graphicOverlay.endFill();
+
+            this.overlay = this.game.add.image(-10, -10, graphicOverlay.generateTexture);
+            this.overlay.inputEnabled = true;*/
+            this.pauseOverlay = this.game.add.graphics(0, 0);
+            this.pauseOverlay.beginFill(0x000000, 0.7);
+            this.pauseOverlay.drawRect(0, 0, 800, 600);
+            this.pauseOverlay.endFill();
+            this.pauseOverlay.inputEnabled = true;
+        };
+        Play.prototype.startDialog = function () {
+            if (!this.eventLock && this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && !this.pauseState) {
+                this.eventLock = true;
+                console.log("activated");
+                //this.game.input.enabled = false;
+                this.dialogLocation = this.game.add.text(0, 500, "", { font: "65px Arial", fill: "#ffffff", align: "center" });
+                BabyTrader.Dialog.startDialog(this.game, this.dialogLocation, BabyTrader.Dialog.d_0001);
+            }
         };
         Play.prototype.createCoins = function () {
             this.coins = this.game.add.group();
@@ -91,22 +123,22 @@ var BabyTrader;
             });
         };
         Play.prototype.playerControl = function () {
-            if (this.cursors.up.isDown) {
+            if (this.cursors.up.isDown && !this.pauseState) {
                 this.player.body.velocity.y = -this.speed;
             }
-            else if (this.cursors.down.isDown) {
+            else if (this.cursors.down.isDown && !this.pauseState) {
                 this.player.body.velocity.y = this.speed;
             }
             else {
                 this.player.body.velocity.y = 0;
             }
-            if (this.cursors.left.isDown) {
+            if (this.cursors.left.isDown && !this.pauseState) {
                 this.switchPlayerDirection(this.player_isLeft);
                 this.player_isLeft = true;
                 this.player.body.velocity.x = -this.speed;
                 this.playerPlayAnimation('walk', 20);
             }
-            else if (this.cursors.right.isDown) {
+            else if (this.cursors.right.isDown && !this.pauseState) {
                 this.switchPlayerDirection(this.player_isLeft);
                 this.player_isLeft = false;
                 this.player.body.velocity.x = this.speed;

@@ -14,7 +14,7 @@ module BabyTrader {
         }
 
         preload() {
-            this.game.load.image('preloadIcon', 'assets/graphics/preloader.gif');
+            this.game.load.image('preloadIcon', 'assets/sprites/preloader.gif');
         }
 
         create() {

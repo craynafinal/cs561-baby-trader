@@ -1,0 +1,33 @@
+location based on anchor(.5)
+
+light gray bg: afb3b6
+dark gray bg: 637079
+
+baby: 375x217
+customer: 109x201
+
+
+below is location based on 0,0
+
+template
+-customer text: 27x363
+-money to make: 461x471 (right top)
+-time: 572x471 (right top)
+-baby text(d4dbe1): name(520x36 / size: 27)
+	description(520x65 / size: 18)
+	properties(519x137 / size: 14)
+
+-energybar(245x553 / size: 190x18)
+
+below is location based on 1, 0(right top)
+
+begin
+-time given: 564 x 246 (right top)
+-sales goal: 564 x 312 (right top)
+
+result
+-time taken: 565x215
+-total sales: 564x281
+-sales goal: 564x347
+
+green txt:25px, 35eb35

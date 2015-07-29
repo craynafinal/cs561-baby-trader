@@ -18,3 +18,9 @@ function playBackgroundSound(game, music: string) {
 function stopBackgroundSound() {
     global_bgm.stop();
 }
+
+function setupKeyboardHotkeys(gameVariable, keyVariable, keyboardKey, keyMethod, keyThis) {
+    keyVariable = gameVariable.input.keyboard.addKey(keyboardKey);
+    keyVariable.onDown.add(keyMethod, keyThis);
+    gameVariable.input.keyboard.removeKeyCapture(keyboardKey);
+}

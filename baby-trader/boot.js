@@ -20,7 +20,7 @@ var BabyTrader;
             _super.call(this);
         }
         Boot.prototype.preload = function () {
-            this.game.load.image('preloadIcon', 'assets/graphics/preloader.gif');
+            this.game.load.image('preloadIcon', 'assets/sprites/preloader.gif');
         };
         Boot.prototype.create = function () {
             //this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;

@@ -23,7 +23,7 @@ var BabyTrader;
         };
         Title.prototype.create = function () {
             // set background color
-            this.game.stage.backgroundColor = Const.Color.TITLE_BACKGROUND;
+            this.game.stage.backgroundColor = BabyTrader.Const.TITLE_BACKGROUND;
             // play bgm
             playBackgroundSound(this.game, 'bgm_pink65');
             // show title and enable dragging
@@ -36,8 +36,8 @@ var BabyTrader;
             // show text buttons
             this.sound = this.game.add.audio('se_babyCrying');
             var goToPlayState = function (game) {
-                game.state.start("play");
                 stopBackgroundSound();
+                game.state.start("prologue");
             };
             var showHowToPlay = function (game) {
                 console.log("how to play");

@@ -23,11 +23,8 @@ var BabyTrader;
             this.game.load.image('preloadIcon', 'assets/sprites/preloader.gif');
         };
         Boot.prototype.create = function () {
-            //this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-            //this.scale.setMinMax(480, 260, 1024, 768);
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
-            this.game.physics.startSystem(Phaser.Physics.ARCADE);
             this.game.state.start("preload");
         };
         Boot.prototype.update = function () {

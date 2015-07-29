@@ -14,12 +14,12 @@ module BabyTrader {
             super();
         }
 
-        ready: boolean;
-        preloadIcon;
+        private ready: boolean;
+        private preloadIcon;
 
         preload() {
-            this.preloadIcon = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'preloadIcon');
-            this.preloadIcon.anchor.set(0.5, 0.5);
+            this.preloadIcon = displaySpriteOnScreen(this.game, this.preloadIcon, 'preloadIcon', this.game.world.centerX, this.game.world.centerY);
+
 
             this.game.load.onLoadComplete.addOnce(this.onLoadComplete, this);
             this.game.load.setPreloadSprite(this.preloadIcon);
@@ -45,8 +45,7 @@ module BabyTrader {
             this.game.load.image('startPage_startButton_inv', 'assets/sprites/startPage_startButton_inv_191x357.png');
 
             // sprites: prologue
-            this.game.load.image('sprite_prologue_01', 'assets/sprites/babyTrader_temp.png');
-            this.game.load.image('sprite_prologue_02', 'assets/sprites/customer_temp.png');
+            this.game.load.image('prologue_babyTrader', 'assets/sprites/baby_001.png');
 
             // sprites: goal screen
             this.game.load.image('goalScreen_backToTitleButton', 'assets/sprites/goalScreen_backToTitleButton_263x452.png');
@@ -71,8 +70,8 @@ module BabyTrader {
             this.game.load.image('template_arrowRight_inv', 'assets/sprites/template_arrowRight_inv_762x380.png');
             this.game.load.image('template_businessButton', 'assets/sprites/template_businessButton_693x536.png');
             this.game.load.image('template_businessButton_inv', 'assets/sprites/template_businessButton_inv_693x536.png');
-            this.game.load.image('template_chargeButton', 'assets/sprites/template_chargeButton_533x562.png');
-            this.game.load.image('template_chargeButton_inv', 'assets/sprites/template_chargeButton_inv_533x562.png');
+            this.game.load.image('template_chargeButton', 'assets/sprites/template_chargeButton_553x562.png');
+            this.game.load.image('template_chargeButton_inv', 'assets/sprites/template_chargeButton_inv_553x562.png');
             this.game.load.image('template_pauseButton', 'assets/sprites/template_pauseButton_693x466.png');
             this.game.load.image('template_pauseButton_inv', 'assets/sprites/template_pauseButton_inv_693x466.png');
             this.game.load.image('template_talentButton', 'assets/sprites/template_talentButton_487x562.png');
@@ -85,7 +84,7 @@ module BabyTrader {
         }
 
         update() {
-            if (!!this.ready) {
+            if (this.ready) {
                 this.game.state.start('title');
             }
         }

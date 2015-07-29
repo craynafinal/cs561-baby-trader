@@ -27,48 +27,27 @@ var BabyTrader;
             // play bgm
             playBackgroundSound(this.game, 'bgm_pink65');
             // show title and enable dragging
-            this.title = this.game.add.sprite(40, 46, 'startPage_title');
+            this.title = displaySpriteOnScreen(this.game, this.title, 'startPage_title', 244, 177);
             this.title.inputEnabled = true;
             this.title.input.useHandCursor = true;
             this.title.input.enableDrag();
             // show title illustration
-            this.illustration = this.game.add.sprite(316, 53, 'startPage_babyTrader');
-            // show text buttons
-            this.sound = this.game.add.audio('se_babyCrying');
-            var goToPlayState = function (game) {
+            this.illustration = displaySpriteOnScreen(this.game, this.illustration, 'startPage_babyTrader', 558, 326);
+            var startPrologueFunction = function (game) {
                 stopBackgroundSound();
-                game.state.start("prologue");
+                game.state.start('prologue');
             };
-            var showHowToPlay = function (game) {
-                console.log("how to play");
-            };
-            var showCredits = function (game) {
-                console.log("credits");
-            };
-            displayTextButton(this.game, this.startButton, 80, 350, "START GAME", 34, this.sound, goToPlayState);
-            displayTextButton(this.game, this.howToPlayButton, 80, 400, "HOW TO PLAY", 34, this.sound, showHowToPlay);
-            displayTextButton(this.game, this.creditButton, 80, 450, "CREDITS", 34, this.sound, showCredits);
+            // button setups
+            this.startButton = displaySpriteButtonOnScreen(this.game, this.startButton, 'startPage_startButton', 'startPage_startButton_inv', startPrologueFunction, 191, 357);
+            this.howToPlayButton = displaySpriteButtonOnScreen(this.game, this.howToPlayButton, 'startPage_howToPlayButton', 'startPage_howToPlayButton_inv', null, 191, 410);
+            this.creditsButton = displaySpriteButtonOnScreen(this.game, this.creditsButton, 'startPage_creditsButton', 'startPage_creditsButton_inv', null, 191, 463);
+            // copyright
+            this.copyright = displaySpriteOnScreen(this.game, this.copyright, 'startPage_copyright', 171, 533);
         };
         Title.prototype.update = function () {
         };
         return Title;
     })(Phaser.State);
     BabyTrader.Title = Title;
-    function displayTextButton(game, textButtonElement, x, y, text, fontSize, sound, method) {
-        textButtonElement = game.add.bitmapText(x, y, 'carrier_command', text, fontSize);
-        textButtonElement.inputEnabled = true;
-        textButtonElement.input.useHandCursor = true;
-        textButtonElement.events.onInputOver.add(function () {
-            textButtonElement.fontSize = fontSize * 1.2;
-        });
-        textButtonElement.events.onInputOut.add(function () {
-            textButtonElement.fontSize = fontSize;
-        });
-        textButtonElement.events.onInputUp.add(function () {
-            method(game);
-            if (!sound.isPlaying) {
-            }
-        });
-    }
 })(BabyTrader || (BabyTrader = {}));
 //# sourceMappingURL=title.js.map

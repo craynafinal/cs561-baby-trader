@@ -13,68 +13,57 @@ module BabyTrader {
             super();
         }
 
-        key_skip = null;
-        prologueSprites = null;
-        spriteIndex = 0;
-        sprite = null;
-        dialogLocation = null;
+        private key_skip = null;
+        private prologueSprite = null;
+        private dialogLocation = null;
 
         preload() {
-            // setup sprites
-            this.prologueSprites = [
-                'sprite_prologue_01',
-                'sprite_prologue_02'
-            ];
         }
 
         create() {
             // skip key setup
-            setupKeyboardHotkeys(this.game, this.key_skip, Phaser.Keyboard.ESC, this.skipToPlay, this);
-
-            // skip instruction
-            this.game.add.bitmapText(20, 20, 'carrier_command', 'Press ESC to skip', 14);
+            setupKeyboardHotkeys(this.game, this.key_skip, Phaser.Keyboard.ESC, function () { this.game.state.start("play"); }, this);
 
             // set the bg color
             this.game.stage.backgroundColor = Const.PROLOGUE_BACKGROUND;
 
-            // update event
-            this.game.time.events.repeat(Phaser.Timer.SECOND * 8, this.prologueSprites.length + 1, this.nextMove, this);
+            // after certain time, it will skip to the next state
+            this.game.time.events.add(Phaser.Timer.SECOND * 10, this.skipToPlay, this);
 
             // text printing start
-            //this.dialogLocation = this.game.add.text(this.game.world.centerX, 500, '', { font: "35px Arial", fill: "#ffffff", align: "center" });
-            this.dialogLocation = this.game.add.bitmapText(this.game.world.centerX, 500, 'carrier_command', '', 18);
+            this.dialogLocation = displayTextOnScreen(this.game, this.dialogLocation, '', { font: "bold 18px Arial", fill: "#ffffff", align: "center" }, this.game.world.centerX, 500);
 
-            this.dialogLocation.anchor.setTo(.5);
-            Dialog.startDialog(this.game, this.dialogLocation, Dialog.prologue);
+            // start prologue
+            this.game.time.events.add(Phaser.Timer.SECOND * 1, this.startPrologue, this);
         }
 
         update() {
         }
 
-        skipToPlay() {
-            this.game.state.start("play");
-        }
-
-        nextMove() {
-            if (this.spriteIndex >= this.prologueSprites.length) {
-                this.skipToPlay();
-            } else {
-                this.switchSprite();
+        startPrologue() {
+            var skipFunction = function (game) {
+                game.state.start("play");
             }
-        }
 
-        switchSprite() {
-            if (this.spriteIndex > 0) {
-                this.game.add.tween(this.sprite).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-            }
+            // skip instruction
+            var skipText = displayTextButtonOnScreen(this.game, skipText, 'Please click here or press ESC button to skip.', { font: "bold 12px Arial", fill: "#ffffff", align: "left" }, skipFunction, 20, 20, 0, 0);
             
-            this.sprite = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY - 100, this.prologueSprites[this.spriteIndex++]);
-            this.sprite.anchor.setTo(.5);
+            // display illustration sprite and add tweens
+            this.prologueSprite = displaySpriteOnScreen(this.game, this.prologueSprite, 'prologue_babyTrader', this.game.world.centerX, this.game.world.centerY);
+            addFadeTweenToSprite(this.game, this.prologueSprite, 0, 1, 1000);
 
-            // set initial transparency to zero
-            this.sprite.alpha = 0;
+            Dialog.startDialog(this.game, this.dialogLocation, Dialog.prologue);
+        }
 
-            this.game.add.tween(this.sprite).to({ alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
+        skipToPlay() {
+            addFadeTweenToSprite(this.game, this.prologueSprite, 1, 0, 1000);
+            this.dialogLocation.destroy();
+
+            var nextStateFunction = function () {
+                this.game.state.start("play");
+            };
+            
+            this.game.time.events.add(Phaser.Timer.SECOND * 2, nextStateFunction, this);
         }
     }
 } 

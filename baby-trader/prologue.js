@@ -19,55 +19,43 @@ var BabyTrader;
         function Prologue() {
             _super.call(this);
             this.key_skip = null;
-            this.prologueSprites = null;
-            this.spriteIndex = 0;
-            this.sprite = null;
+            this.prologueSprite = null;
             this.dialogLocation = null;
         }
         Prologue.prototype.preload = function () {
-            // setup sprites
-            this.prologueSprites = [
-                'sprite_prologue_01',
-                'sprite_prologue_02'
-            ];
         };
         Prologue.prototype.create = function () {
             // skip key setup
-            setupKeyboardHotkeys(this.game, this.key_skip, Phaser.Keyboard.ESC, this.skipToPlay, this);
-            // skip instruction
-            this.game.add.bitmapText(20, 20, 'carrier_command', 'Press ESC to skip', 14);
+            setupKeyboardHotkeys(this.game, this.key_skip, Phaser.Keyboard.ESC, function () { this.game.state.start("play"); }, this);
             // set the bg color
             this.game.stage.backgroundColor = BabyTrader.Const.PROLOGUE_BACKGROUND;
-            // update event
-            this.game.time.events.repeat(Phaser.Timer.SECOND * 8, this.prologueSprites.length + 1, this.nextMove, this);
+            // after certain time, it will skip to the next state
+            this.game.time.events.add(Phaser.Timer.SECOND * 10, this.skipToPlay, this);
             // text printing start
-            //this.dialogLocation = this.game.add.text(this.game.world.centerX, 500, '', { font: "35px Arial", fill: "#ffffff", align: "center" });
-            this.dialogLocation = this.game.add.bitmapText(this.game.world.centerX, 500, 'carrier_command', '', 18);
-            this.dialogLocation.anchor.setTo(.5);
-            BabyTrader.Dialog.startDialog(this.game, this.dialogLocation, BabyTrader.Dialog.prologue);
+            this.dialogLocation = displayTextOnScreen(this.game, this.dialogLocation, '', { font: "bold 18px Arial", fill: "#ffffff", align: "center" }, this.game.world.centerX, 500);
+            // start prologue
+            this.game.time.events.add(Phaser.Timer.SECOND * 1, this.startPrologue, this);
         };
         Prologue.prototype.update = function () {
         };
+        Prologue.prototype.startPrologue = function () {
+            var skipFunction = function (game) {
+                game.state.start("play");
+            };
+            // skip instruction
+            var skipText = displayTextButtonOnScreen(this.game, skipText, 'Please click here or press ESC button to skip.', { font: "bold 12px Arial", fill: "#ffffff", align: "left" }, skipFunction, 20, 20, 0, 0);
+            // display illustration sprite and add tweens
+            this.prologueSprite = displaySpriteOnScreen(this.game, this.prologueSprite, 'prologue_babyTrader', this.game.world.centerX, this.game.world.centerY);
+            addFadeTweenToSprite(this.game, this.prologueSprite, 0, 1, 1000);
+            BabyTrader.Dialog.startDialog(this.game, this.dialogLocation, BabyTrader.Dialog.prologue);
+        };
         Prologue.prototype.skipToPlay = function () {
-            this.game.state.start("play");
-        };
-        Prologue.prototype.nextMove = function () {
-            if (this.spriteIndex >= this.prologueSprites.length) {
-                this.skipToPlay();
-            }
-            else {
-                this.switchSprite();
-            }
-        };
-        Prologue.prototype.switchSprite = function () {
-            if (this.spriteIndex > 0) {
-                this.game.add.tween(this.sprite).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-            }
-            this.sprite = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY - 100, this.prologueSprites[this.spriteIndex++]);
-            this.sprite.anchor.setTo(.5);
-            // set initial transparency to zero
-            this.sprite.alpha = 0;
-            this.game.add.tween(this.sprite).to({ alpha: 1 }, 1000, Phaser.Easing.Linear.None, true);
+            addFadeTweenToSprite(this.game, this.prologueSprite, 1, 0, 1000);
+            this.dialogLocation.destroy();
+            var nextStateFunction = function () {
+                this.game.state.start("play");
+            };
+            this.game.time.events.add(Phaser.Timer.SECOND * 2, nextStateFunction, this);
         };
         return Prologue;
     })(Phaser.State);

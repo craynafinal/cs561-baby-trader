@@ -10,11 +10,19 @@ Please see the file COPYING in the source distribution of this software for lice
 module BabyTrader {
     export class Const {
         public static get TITLE_BACKGROUND(): string {
-            return "#b62b1d"
+            return "#afb3b6";
         };
 
         public static get PROLOGUE_BACKGROUND(): string {
-            return "#000000"
+            return "#2f3a42";
+        };
+
+        public static get TEMPLATE_BACKGROUND(): string {
+            return "#637079";
+        };
+
+        public static get BOOT_BACKGROUND(): string {
+            return "#2f3a42";
         };
 
         public static get GAMESCREEN_WIDTH(): number {
@@ -23,6 +31,10 @@ module BabyTrader {
 
         public static get GAMESCREEN_HEIGHT(): number {
             return 600;
+        };
+
+        public static get FADE_COLOR() {
+            return 0x2f3a42;
         };
     }
 } 

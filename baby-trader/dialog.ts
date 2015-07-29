@@ -9,27 +9,14 @@ Please see the file COPYING in the source distribution of this software for lice
 
 module BabyTrader {
     export class Dialog {
-        public static get d_0001(): string[]{
-            return [
-                "photon storm presents",
-                "a phaser production",
-                "Kern of Duty",
-                "directed by rich davey",
-                "rendering by mat groves",
-                "03:45, November 4th, 2014",
-                "somewhere in the north pacific",
-                "mission control bravo ..."
-            ];
-        };
-
-
         public static get prologue(): string[] {
             return [
-                "photon storm presents",
-                "a phaser production",
-                "Kern of Duty",
-                "directed by rich davey",
-                "rendering by mat groves",
+                "Welcome to my shop.",
+                "Welcome to my shop.",
+                "Please let me introduce my self.",
+                "I am the Baby Trader.",
+                "It is my honer to grant your wish.",
+                "Have you ever thought about ",
                 "03:45, November 4th, 2014",
                 "somewhere in the north pacific",
                 "mission control bravo ..."

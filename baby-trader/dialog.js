@@ -11,31 +11,15 @@ var BabyTrader;
     var Dialog = (function () {
         function Dialog() {
         }
-        Object.defineProperty(Dialog, "d_0001", {
-            get: function () {
-                return [
-                    "photon storm presents",
-                    "a phaser production",
-                    "Kern of Duty",
-                    "directed by rich davey",
-                    "rendering by mat groves",
-                    "03:45, November 4th, 2014",
-                    "somewhere in the north pacific",
-                    "mission control bravo ..."
-                ];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        ;
         Object.defineProperty(Dialog, "prologue", {
             get: function () {
                 return [
-                    "photon storm presents",
-                    "a phaser production",
-                    "Kern of Duty",
-                    "directed by rich davey",
-                    "rendering by mat groves",
+                    "Welcome to my shop.",
+                    "Welcome to my shop.",
+                    "Please let me introduce my self.",
+                    "I am the Baby Trader.",
+                    "It is my honer to grant your wish.",
+                    "Have you ever thought about ",
                     "03:45, November 4th, 2014",
                     "somewhere in the north pacific",
                     "mission control bravo ..."

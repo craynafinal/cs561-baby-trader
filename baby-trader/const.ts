@@ -9,20 +9,29 @@ Please see the file COPYING in the source distribution of this software for lice
 
 module BabyTrader {
     export class Const {
+
+        private static color_lightGray = "#afb3b6";
+        private static color_darkGray = "#2f3a42";
+        private static color_medGray = "#637079";
+
         public static get TITLE_BACKGROUND(): string {
-            return "#afb3b6";
+            return this.color_lightGray;
         };
 
         public static get PROLOGUE_BACKGROUND(): string {
-            return "#2f3a42";
+            return this.color_darkGray;
         };
 
         public static get TEMPLATE_BACKGROUND(): string {
-            return "#637079";
+            return this.color_medGray;
+        };
+
+        public static get BEGIN_BACKGROUND(): string {
+            return this.color_lightGray;
         };
 
         public static get BOOT_BACKGROUND(): string {
-            return "#2f3a42";
+            return this.color_lightGray;
         };
 
         public static get GAMESCREEN_WIDTH(): number {
@@ -35,6 +44,10 @@ module BabyTrader {
 
         public static get FADE_COLOR() {
             return 0x2f3a42;
+        };
+
+        public static get BITMAP_FONT(): string {
+            return 'carrier_command';
         };
     }
 } 

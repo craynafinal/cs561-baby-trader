@@ -6,19 +6,30 @@ Portland State University
 This program is licensed under the MIT License.
 Please see the file COPYING in the source distribution of this software for license terms.
 ****************************************************************************************/
-var global_bgm = null;
+var globalBgm = null;
 function playBackgroundSound(game, music) {
-    global_bgm = game.add.audio(music);
-    global_bgm.loop = true;
-    global_bgm.play();
+    if (globalBgm != null) {
+        stopBackgroundSound();
+    }
+    globalBgm = game.add.audio(music);
+    globalBgm.loop = true;
+    globalBgm.play();
 }
 function stopBackgroundSound() {
-    global_bgm.stop();
+    globalBgm.stop();
+    globalBgm = null;
 }
 function setupKeyboardHotkeys(gameVariable, keyVariable, keyboardKey, keyMethod, keyThis) {
     keyVariable = gameVariable.input.keyboard.addKey(keyboardKey);
     keyVariable.onDown.add(keyMethod, keyThis);
     gameVariable.input.keyboard.removeKeyCapture(keyboardKey);
+}
+function displayBitmapTextOnScreen(game, textObject, text, bitMapFont, fontSize, x, y, anchorX, anchorY) {
+    if (anchorX === void 0) { anchorX = .5; }
+    if (anchorY === void 0) { anchorY = .5; }
+    textObject = game.add.bitmapText(x, y, bitMapFont, text, fontSize);
+    textObject.anchor.setTo(anchorX, anchorY);
+    return textObject;
 }
 function displayTextOnScreen(game, textObject, text, fontStyle, x, y, anchorX, anchorY) {
     if (anchorX === void 0) { anchorX = .5; }
@@ -27,13 +38,16 @@ function displayTextOnScreen(game, textObject, text, fontStyle, x, y, anchorX, a
     textObject.anchor.setTo(anchorX, anchorY);
     return textObject;
 }
-function displayTextButtonOnScreen(game, textObject, text, fontStyle, upMethod, x, y, anchorX, anchorY) {
-    textObject = displayTextOnScreen(game, textObject, text, fontStyle, x, y, anchorX, anchorY);
+function displayTextButtonOnScreen(currentObject, textObject, text, fontStyle, upMethod, x, y, anchorX, anchorY) {
+    textObject = displayTextOnScreen(currentObject.game, textObject, text, fontStyle, x, y, anchorX, anchorY);
     textObject.inputEnabled = true;
     textObject.input.useHandCursor = true;
-    textObject.events.onInputUp.add(function () {
-        upMethod(game);
-    });
+    if (upMethod) {
+        textObject.events.onInputUp.add(function () {
+            upMethod(currentObject);
+        });
+    }
+    return textObject;
 }
 function displaySpriteOnScreen(game, spriteObject, spriteName, x, y, anchorX, anchorY) {
     if (anchorX === void 0) { anchorX = .5; }
@@ -42,17 +56,20 @@ function displaySpriteOnScreen(game, spriteObject, spriteName, x, y, anchorX, an
     spriteObject.anchor.setTo(anchorX, anchorY);
     return spriteObject;
 }
-function displaySpriteButtonOnScreen(game, spriteOjbect, spriteName, spriteInvName, upMethod, x, y, anchorX, anchorY) {
-    spriteOjbect = displaySpriteOnScreen(game, spriteOjbect, spriteName, x, y, anchorX, anchorY);
-    spriteOjbect.inputEnabled = true;
-    spriteOjbect.input.useHandCursor = true;
-    spriteOjbect.events.onInputDown.add(function () {
-        spriteOjbect.loadTexture(spriteInvName);
+function displaySpriteButtonOnScreen(currentObject, spriteObject, spriteName, spriteInvName, upMethod, x, y, anchorX, anchorY) {
+    spriteObject = displaySpriteOnScreen(currentObject.game, spriteObject, spriteName, x, y, anchorX, anchorY);
+    spriteObject.inputEnabled = true;
+    spriteObject.input.useHandCursor = true;
+    spriteObject.events.onInputDown.add(function () {
+        spriteObject.loadTexture(spriteInvName);
     });
-    spriteOjbect.events.onInputUp.add(function () {
-        spriteOjbect.loadTexture(spriteName);
-        upMethod(game);
+    spriteObject.events.onInputUp.add(function () {
+        spriteObject.loadTexture(spriteName);
+        if (upMethod) {
+            upMethod(currentObject);
+        }
     });
+    return spriteObject;
 }
 function addTweenToGame(game, sprite, opacity, time) {
     game.add.tween(sprite).to({ alpha: opacity }, time, Phaser.Easing.Linear.None, true);
@@ -61,12 +78,12 @@ function addFadeTweenToSprite(game, sprite, startOpacity, endOpacity, time) {
     sprite.alpha = startOpacity;
     addTweenToGame(game, sprite, endOpacity, time);
 }
-function fadeScreen(game, fillColor, startOpacity, endOpacity, time) {
-    var pauseOverlay = game.add.graphics(0, 0);
-    pauseOverlay.beginFill(0x000000, startOpacity);
-    pauseOverlay.drawRect(0, 0, BabyTrader.Const.GAMESCREEN_WIDTH, BabyTrader.Const.GAMESCREEN_HEIGHT);
-    pauseOverlay.endFill();
-    addTweenToGame(game, pauseOverlay, endOpacity, time);
-    pauseOverlay.destroy();
+function displaySolidBackground(game, graphicObject, color, opacity) {
+    graphicObject = game.add.graphics(0, 0);
+    graphicObject.beginFill(color, opacity);
+    graphicObject.drawRect(0, 0, BabyTrader.Const.GAMESCREEN_WIDTH, BabyTrader.Const.GAMESCREEN_HEIGHT);
+    graphicObject.endFill();
+    graphicObject.inputEnabled = true;
+    return graphicObject;
 }
 //# sourceMappingURL=global.js.map

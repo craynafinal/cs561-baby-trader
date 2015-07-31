@@ -26,7 +26,9 @@ var BabyTrader;
             // sound effects
             this.game.load.audio('se_babyCrying', 'assets/sounds/se_babyCrying.wav');
             // bgm
-            this.game.load.audio('bgm_pink65', 'assets/sounds/bgm_pink65.mp3');
+            this.game.load.audio('bgm_title', 'assets/sounds/bgm_title_kaniba.ogg');
+            this.game.load.audio('bgm_prologue', 'assets/sounds/bgm_prologue_k-sishou.ogg');
+            this.game.load.audio('bgm_play', 'assets/sounds/bgm_play_100.ogg');
             // fonts
             this.game.load.bitmapFont('carrier_command', 'assets/bitmapFonts/nokia.png', 'assets/bitmapFonts/nokia.xml');
             // sprites: title

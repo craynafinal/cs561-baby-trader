@@ -21,6 +21,9 @@ module BabyTrader {
         }
 
         create() {
+            // setup bgm
+            playBackgroundSound(this.game, 'bgm_prologue');
+
             // skip key setup
             setupKeyboardHotkeys(this.game, this.key_skip, Phaser.Keyboard.ESC, function () { this.game.state.start("play"); }, this);
 
@@ -41,12 +44,12 @@ module BabyTrader {
         }
 
         startPrologue() {
-            var skipFunction = function (game) {
-                game.state.start("play");
+            var skipFunction = function (currentObject) {
+                currentObject.game.state.start("play");
             }
 
             // skip instruction
-            var skipText = displayTextButtonOnScreen(this.game, skipText, 'Please click here or press ESC button to skip.', { font: "bold 12px Arial", fill: "#ffffff", align: "left" }, skipFunction, 20, 20, 0, 0);
+            var skipText = displayTextButtonOnScreen(this, skipText, 'Please click here or press ESC button to skip.', { font: "bold 12px Arial", fill: "#ffffff", align: "left" }, skipFunction, 20, 20, 0, 0);
             
             // display illustration sprite and add tweens
             this.prologueSprite = displaySpriteOnScreen(this.game, this.prologueSprite, 'prologue_babyTrader', this.game.world.centerX, this.game.world.centerY);

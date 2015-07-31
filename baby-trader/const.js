@@ -13,7 +13,7 @@ var BabyTrader;
         }
         Object.defineProperty(Const, "TITLE_BACKGROUND", {
             get: function () {
-                return "#afb3b6";
+                return this.color_lightGray;
             },
             enumerable: true,
             configurable: true
@@ -21,7 +21,7 @@ var BabyTrader;
         ;
         Object.defineProperty(Const, "PROLOGUE_BACKGROUND", {
             get: function () {
-                return "#2f3a42";
+                return this.color_darkGray;
             },
             enumerable: true,
             configurable: true
@@ -29,7 +29,23 @@ var BabyTrader;
         ;
         Object.defineProperty(Const, "TEMPLATE_BACKGROUND", {
             get: function () {
-                return "#637079";
+                return this.color_medGray;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ;
+        Object.defineProperty(Const, "BEGIN_BACKGROUND", {
+            get: function () {
+                return this.color_lightGray;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ;
+        Object.defineProperty(Const, "BOOT_BACKGROUND", {
+            get: function () {
+                return this.color_lightGray;
             },
             enumerable: true,
             configurable: true
@@ -59,6 +75,17 @@ var BabyTrader;
             configurable: true
         });
         ;
+        Object.defineProperty(Const, "BITMAP_FONT", {
+            get: function () {
+                return 'carrier_command';
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ;
+        Const.color_lightGray = "#afb3b6";
+        Const.color_darkGray = "#2f3a42";
+        Const.color_medGray = "#637079";
         return Const;
     })();
     BabyTrader.Const = Const;

@@ -25,6 +25,8 @@ var BabyTrader;
         Prologue.prototype.preload = function () {
         };
         Prologue.prototype.create = function () {
+            // setup bgm
+            playBackgroundSound(this.game, 'bgm_prologue');
             // skip key setup
             setupKeyboardHotkeys(this.game, this.key_skip, Phaser.Keyboard.ESC, function () { this.game.state.start("play"); }, this);
             // set the bg color
@@ -39,11 +41,11 @@ var BabyTrader;
         Prologue.prototype.update = function () {
         };
         Prologue.prototype.startPrologue = function () {
-            var skipFunction = function (game) {
-                game.state.start("play");
+            var skipFunction = function (currentObject) {
+                currentObject.game.state.start("play");
             };
             // skip instruction
-            var skipText = displayTextButtonOnScreen(this.game, skipText, 'Please click here or press ESC button to skip.', { font: "bold 12px Arial", fill: "#ffffff", align: "left" }, skipFunction, 20, 20, 0, 0);
+            var skipText = displayTextButtonOnScreen(this, skipText, 'Please click here or press ESC button to skip.', { font: "bold 12px Arial", fill: "#ffffff", align: "left" }, skipFunction, 20, 20, 0, 0);
             // display illustration sprite and add tweens
             this.prologueSprite = displaySpriteOnScreen(this.game, this.prologueSprite, 'prologue_babyTrader', this.game.world.centerX, this.game.world.centerY);
             addFadeTweenToSprite(this.game, this.prologueSprite, 0, 1, 1000);

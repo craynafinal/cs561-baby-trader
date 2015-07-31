@@ -23,6 +23,8 @@ var BabyTrader;
             this.game.load.image('preloadIcon', 'assets/sprites/preloader.gif');
         };
         Boot.prototype.create = function () {
+            // set the bg color
+            this.game.stage.backgroundColor = BabyTrader.Const.BOOT_BACKGROUND;
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
             this.game.state.start("preload");

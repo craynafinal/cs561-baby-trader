@@ -12,7 +12,7 @@ Please see the file COPYING in the source distribution of this software for lice
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>TypeScript HTML App</title>
+    <title>Baby Trader</title>
     <link rel="stylesheet" href="app.css" type="text/css" />
     <script src="phaser/phaser.js"></script>
     <script src="app.js"></script>
@@ -28,6 +28,20 @@ Please see the file COPYING in the source distribution of this software for lice
     <script src="dialog.js"></script>
     <script src="prologue.js"></script>
     <script src="storage.js"></script>
+    <script type="text/javascript">
+        WebFontConfig = {
+            google: { families: ['Sarpanch:900:latin'] }
+        };
+        (function () {
+            var wf = document.createElement('script');
+            wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+              '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+            wf.type = 'text/javascript';
+            wf.async = 'true';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(wf, s);
+        })();
+    </script>
 </head>
 <body>
     <div id="content"></div>

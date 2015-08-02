@@ -11,7 +11,8 @@ module BabyTrader {
     export class Baby {
         constructor() {
             // set gender first
-            this.gender = (getRandomNumber(1) > 0) ? true : false;
+            console.log(getRandomNumber(2));
+            this.gender = (getRandomNumber(2) >= 1) ? true : false;
 
             if (this.gender) {
                 this.name = BabyTrader.Baby.names_male[getRandomNumber(BabyTrader.Baby.names_male.length)];
@@ -21,34 +22,16 @@ module BabyTrader {
                 this.sprite = BabyTrader.Baby.sprites_female[getRandomNumber(BabyTrader.Baby.sprites_female.length)];
             }
 
-            this.age = getRandomNumber(BabyTrader.Baby.age_max);
+            this.month = getRandomNumber(BabyTrader.Baby.month_max);
             this.price = getRandomNumber(BabyTrader.Baby.price_max);
             this.attributes = new Array();
-            /*
-            var i = 0;
-
-            while (i < BabyTrader.Baby.attributes_max) {
-                var temp = new BabyTrader.Attribute();
-                var check = false;
-                var j = 0;
-
-                while (!check && (j < this.attributes.length)) {
-                    if (this.attributes[j] == temp) {
-                        check = true;
-                    }
-                }
-
-                if (check) {
-                    this.attributes.push(temp);
-                    i++;
-                }
-            }*/
+            this.attributes = insertAttributeToArrayAsSet(this.attributes, BabyTrader.Baby.attributes_max);
         }
 
         private name: string = '';
         private gender: boolean; // true: male, false: female
         private sprite = null;
-        private age: number = 0;
+        private month: number = 0;
         private price: number = 0;
         private attributes: Attribute[];
         private static attributes_max = 5;
@@ -57,14 +40,18 @@ module BabyTrader {
         private static sprites_male = ['babies_male_001'];
         private static sprites_female = ['babies_male_001'];
         private static price_max = 100;
-        private static age_max = 5;
+        private static month_max = 24;
+
+        getPrice() {
+            return this.price;
+        }
 
         getName() {
             return this.name;
         }
 
-        getAge() {
-            return this.age;
+        getMonth() {
+            return this.month;
         }
 
         getSprite() {

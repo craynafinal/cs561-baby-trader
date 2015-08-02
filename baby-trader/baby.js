@@ -12,10 +12,11 @@ var BabyTrader;
         function Baby() {
             this.name = '';
             this.sprite = null;
-            this.age = 0;
+            this.month = 0;
             this.price = 0;
             // set gender first
-            this.gender = (getRandomNumber(1) > 0) ? true : false;
+            console.log(getRandomNumber(2));
+            this.gender = (getRandomNumber(2) >= 1) ? true : false;
             if (this.gender) {
                 this.name = BabyTrader.Baby.names_male[getRandomNumber(BabyTrader.Baby.names_male.length)];
                 this.sprite = BabyTrader.Baby.sprites_male[getRandomNumber(BabyTrader.Baby.sprites_male.length)];
@@ -24,34 +25,19 @@ var BabyTrader;
                 this.name = BabyTrader.Baby.names_female[getRandomNumber(BabyTrader.Baby.names_female.length)];
                 this.sprite = BabyTrader.Baby.sprites_female[getRandomNumber(BabyTrader.Baby.sprites_female.length)];
             }
-            this.age = getRandomNumber(BabyTrader.Baby.age_max);
+            this.month = getRandomNumber(BabyTrader.Baby.month_max);
             this.price = getRandomNumber(BabyTrader.Baby.price_max);
             this.attributes = new Array();
-            /*
-            var i = 0;
-
-            while (i < BabyTrader.Baby.attributes_max) {
-                var temp = new BabyTrader.Attribute();
-                var check = false;
-                var j = 0;
-
-                while (!check && (j < this.attributes.length)) {
-                    if (this.attributes[j] == temp) {
-                        check = true;
-                    }
-                }
-
-                if (check) {
-                    this.attributes.push(temp);
-                    i++;
-                }
-            }*/
+            this.attributes = insertAttributeToArrayAsSet(this.attributes, BabyTrader.Baby.attributes_max);
         }
+        Baby.prototype.getPrice = function () {
+            return this.price;
+        };
         Baby.prototype.getName = function () {
             return this.name;
         };
-        Baby.prototype.getAge = function () {
-            return this.age;
+        Baby.prototype.getMonth = function () {
+            return this.month;
         };
         Baby.prototype.getSprite = function () {
             return this.sprite;
@@ -65,7 +51,7 @@ var BabyTrader;
         Baby.sprites_male = ['babies_male_001'];
         Baby.sprites_female = ['babies_male_001'];
         Baby.price_max = 100;
-        Baby.age_max = 5;
+        Baby.month_max = 24;
         return Baby;
     })();
     BabyTrader.Baby = Baby;

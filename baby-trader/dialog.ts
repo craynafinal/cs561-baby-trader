@@ -45,7 +45,7 @@ module BabyTrader {
         private static updateLine() {
             if (this.dialogLine.length < this.dialogContent[this.dialogIndex].length) {
                 this.dialogLine = this.dialogContent[this.dialogIndex].substr(0, this.dialogLine.length + 1);
-                this.dialogLocation.setText(this.dialogLine);
+                this.dialogLocation.setText(this.dialogLine.toUpperCase());
             }
             else {
                 this.game.time.events.add(Phaser.Timer.SECOND * 2, this.nextLine, this);

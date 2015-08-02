@@ -13,7 +13,7 @@ module BabyTrader {
 
     export class Customer {
         constructor() {
-            insertAttributeToArrayAsSet(this.attributes, BabyTrader.Customer.attributes_max);
+            this.attributes = insertAttributeToArrayAsSet(this.attributes, BabyTrader.Customer.attributes_max);
             this.sprite = BabyTrader.Customer.customerSprites[getRandomNumber(BabyTrader.Customer.customerSprites.length)];
         }
 

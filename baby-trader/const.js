@@ -131,6 +131,14 @@ var BabyTrader;
             configurable: true
         });
         ;
+        Object.defineProperty(Const, "TEXTWHITEGRAYCOLOR_STRING", {
+            get: function () {
+                return "#d4dbe1";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ;
         Const.color_lightGray_str = "#afb3b6";
         Const.color_darkGray_str = "#2f3a42";
         Const.color_medGray_str = "#637079";

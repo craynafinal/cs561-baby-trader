@@ -26,7 +26,7 @@ function insertAttributeToArrayAsSet(array, maxNumberToAdd) {
         var check = false;
         var j = 0;
         while (!check && (j < array.length)) {
-            if (array[j] == temp) {
+            if (array[j].getName() == temp.getName()) {
                 check = true;
             }
             j++;

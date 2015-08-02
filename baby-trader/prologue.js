@@ -32,7 +32,7 @@ var BabyTrader;
             // set the bg color
             this.game.stage.backgroundColor = BabyTrader.Const.PROLOGUE_BACKGROUND;
             // text printing start
-            this.dialogLocation = displayTextOnScreen(this.game, this.dialogLocation, '', { font: "bold 18px Arial", fill: "#ffffff", align: "center" }, this.game.world.centerX, 500);
+            this.dialogLocation = displayTextOnScreen(this.game, this.dialogLocation, '', { font: "900 18px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "center" }, this.game.world.centerX, 500);
             // start prologue
             this.game.time.events.add(Phaser.Timer.SECOND * 1, this.startPrologue, this);
             // when the prologue texts are all printed, go to the next state
@@ -45,7 +45,7 @@ var BabyTrader;
                 currentObject.game.state.start("play");
             };
             // skip instruction
-            var skipText = displayTextButtonOnScreen(this, skipText, 'Please click here or press ESC button to skip.', { font: "bold 12px Arial", fill: "#ffffff", align: "left" }, skipFunction, 20, 20, 0, 0);
+            var skipText = displayTextButtonOnScreen(this, skipText, 'Please click here or press ESC button to skip...'.toUpperCase(), { font: "900 12px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, skipFunction, 20, 20, 0, 0);
             // display illustration sprite and add tweens
             this.prologueSprite = displaySpriteOnScreen(this.game, this.prologueSprite, 'prologue_babyTrader', this.game.world.centerX, this.game.world.centerY);
             addFadeTweenToSprite(this.game, this.prologueSprite, 0, 1, 1000);

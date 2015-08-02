@@ -32,7 +32,7 @@ function insertAttributeToArrayAsSet(array, maxNumberToAdd: number) {
         var j = 0;
 
         while (!check && (j < array.length)) {
-            if (array[j] == temp) {
+            if (array[j].getName() == temp.getName()) {
                 check = true;
             }
             j++;

@@ -45,6 +45,9 @@ module BabyTrader {
         private sprite_baby = null;
         private sprite_customer = null;
         private customerDialogLocation = null;
+        private text_babyName = null;
+        private text_babyAgeAndPrice = null;
+        private text_babyAttributes = null;
         
         preload() {
         }
@@ -130,7 +133,8 @@ module BabyTrader {
                this.customers.push(new BabyTrader.Customer());
             }
 
-            this.customerDialogLocation = displayTextOnScreen(this.game, this.customerDialogLocation, '', { font: "bold 18px Arial", fill: "#ffffff", align: "left", wordWrap: true, wordWrapWidth: 160 }, 27, 363, 0, 0);
+            this.customerDialogLocation = displayTextOnScreen(this.game, this.customerDialogLocation, '', { font: "900 18px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left", wordWrap: true, wordWrapWidth: 160 }, 27, 363, 0, 0);
+            this.customerDialogLocation.lineSpacing = -5;
         }
 
         displayCustomers(index) {
@@ -145,7 +149,35 @@ module BabyTrader {
         }
 
         displayBabies(index) {
+            if (this.sprite_baby) {
+                this.sprite_baby.destroy();
+            }
             this.sprite_baby = displaySpriteOnScreen(this.game, this.sprite_baby, this.babies[index].getSprite(), 375, 217);
+
+            if (this.text_babyName) {
+                this.text_babyName.destroy();
+            }
+            this.text_babyName = displayTextOnScreen(this.game, this.text_babyName, this.babies[index].getName().toUpperCase(), { font: "900 26px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, 520, 40, 0, 0);
+
+            if (this.text_babyAgeAndPrice) {
+                this.text_babyAgeAndPrice.destroy();
+            }
+            var months = this.babies[index].getMonth();
+            var monthString = months > 1 ? months + " Months" : months + " Month";
+            this.text_babyAgeAndPrice = displayTextOnScreen(this.game, this.text_babyAgeAndPrice, (monthString + "\nOnly $" + this.babies[index].getPrice()).toUpperCase(), { font: "900 18px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, 520, 66, 0, 0);
+            this.text_babyAgeAndPrice.lineSpacing = -5;
+            if (this.text_babyAttributes) {
+                this.text_babyAttributes.destroy();
+            }
+
+            var attributeStrings = "This baby's attributes:\n";
+            var attributeArray = this.babies[index].getAttributes();
+            
+            for (var i = 0; i < attributeArray.length; i++) {
+                attributeStrings = attributeStrings + "● " + attributeArray[i].getName() + "\n";
+            }
+            
+            this.text_babyAttributes = displayTextOnScreen(this.game, this.text_babyAttributes, attributeStrings.toUpperCase(), { font: "900 16px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, 520, 125, 0, 0);
         }
 
         static releaseTalentCheat(currentObject) {

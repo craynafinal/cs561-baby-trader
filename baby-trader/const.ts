@@ -74,5 +74,9 @@ module BabyTrader {
         public static get GREENCOLOR_STRING(): string {
             return "#35eb35";
         };
+
+        public static get TEXTWHITEGRAYCOLOR_STRING(): string {
+            return "#d4dbe1";
+        };
     }
 } 

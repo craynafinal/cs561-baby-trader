@@ -41,6 +41,10 @@ var BabyTrader;
             this.game.load.image('startPage_howToPlayButton_inv', 'assets/sprites/startPage_howToPlayButton_inv_191x410.png');
             this.game.load.image('startPage_startButton', 'assets/sprites/startPage_startButton_191x357.png');
             this.game.load.image('startPage_startButton_inv', 'assets/sprites/startPage_startButton_inv_191x357.png');
+            // sprites: babies
+            this.game.load.image('babies_male_001', 'assets/sprites/baby_001.png');
+            // sprites: customers
+            this.game.load.image('customers_001', 'assets/sprites/customer_001.png');
             // sprites: prologue
             this.game.load.image('prologue_babyTrader', 'assets/sprites/baby_001.png');
             // sprites: goal screen

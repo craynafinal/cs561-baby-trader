@@ -40,11 +40,15 @@ var BabyTrader;
             this.text_money = null;
             this.text_time = null;
             this.text_goal = null;
-            this.greenFontStyle = { font: "900 26px Sarpanch", fill: BabyTrader.Const.GREENCOLOR_STRING, align: "right" };
             this.isPreparationDone = false;
             this.cheatGauge_sprite = null;
             this.cheatGauge_value = 0;
             this.gameMode = BabyTrader.Const.GAMEMODE_GOAL;
+            this.babies = null;
+            this.customers = null;
+            this.sprite_baby = null;
+            this.sprite_customer = null;
+            this.customerDialogLocation = null;
         }
         Play.prototype.preload = function () {
         };
@@ -52,7 +56,7 @@ var BabyTrader;
             // setup bgm
             playBackgroundSound(this.game, 'bgm_play');
             // setup keys
-            setupKeyboardHotkeys(this.game, this.key_pause, Phaser.Keyboard.ESC, this.pauseOrResumeGame, this);
+            setupKeyboardHotkeys(this.game, this.key_pause, Phaser.Keyboard.ESC, BabyTrader.Play.pauseOrResumeGame, this);
             // setup background color
             this.game.stage.backgroundColor = BabyTrader.Const.TEMPLATE_BACKGROUND;
             // template
@@ -67,8 +71,8 @@ var BabyTrader;
             this.button_arrowRight = displaySpriteButtonOnScreen(this, this.button_arrowRight, 'template_arrowRight', 'template_arrowRight_inv', null, 762, 380);
             this.button_business = displaySpriteButtonOnScreen(this, this.button_business, 'template_businessButton', 'template_businessButton_inv', null, 693, 536);
             this.button_charge = displaySpriteButtonOnScreen(this, this.button_charge, 'template_chargeButton', 'template_chargeButton_inv', chatGaugeFunction, 553, 562);
-            this.button_pause = displaySpriteButtonOnScreen(this, this.button_pause, 'template_pauseButton', 'template_pauseButton_inv', this.pauseOrResumeGame, 693, 466);
-            this.button_talent = displaySpriteButtonOnScreen(this, this.button_talent, 'template_talentButton', 'template_talentButton_inv', null, 487, 562);
+            this.button_pause = displaySpriteButtonOnScreen(this, this.button_pause, 'template_pauseButton', 'template_pauseButton_inv', BabyTrader.Play.pauseOrResumeGame, 693, 466);
+            this.button_talent = displaySpriteButtonOnScreen(this, this.button_talent, 'template_talentButton', 'template_talentButton_inv', BabyTrader.Play.releaseTalentCheat, 487, 562);
             this.setupTimeAndMoney();
             this.displayGoalScreen();
         };
@@ -85,10 +89,7 @@ var BabyTrader;
                 this.removePlayScreen();
                 this.displayResultScreen();
             }
-            if (this.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX) {
-                //BabyTrader.Const.YELLOWCOLOR
-                this.cheatGauge_sprite.graphicsData[0].fillColor = 0xffff00;
-                console.log(this.cheatGauge_sprite.graphicsData[0]);
+            if (this.gameMode == BabyTrader.Const.GAMEMODE_PLAY && this.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX) {
             }
             if (this.gameMode == BabyTrader.Const.GAMEMODE_PLAY && this.cheatGauge_sprite) {
                 this.cheatGauge_sprite.destroy();
@@ -100,9 +101,31 @@ var BabyTrader;
                 this.displayGoalScreen();
             }
         };
-        Play.prototype.releaseTalentCheat = function () {
-            if (this.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX) {
-                this.cheatGauge_value = 0;
+        Play.prototype.printDialog = function (dialogs) {
+            BabyTrader.Dialog.startDialog(this.game, this.customerDialogLocation, dialogs);
+        };
+        Play.prototype.initializeCustomers = function () {
+            this.customers = new Array();
+            for (var i = 0; i < (this.gameLevel + 2); i++) {
+                this.customers.push(new BabyTrader.Customer());
+            }
+            this.customerDialogLocation = displayTextOnScreen(this.game, this.customerDialogLocation, '', { font: "bold 18px Arial", fill: "#ffffff", align: "left", wordWrap: true, wordWrapWidth: 160 }, 27, 363, 0, 0);
+        };
+        Play.prototype.displayCustomers = function (index) {
+            this.sprite_customer = displaySpriteOnScreen(this.game, this.sprite_customer, this.customers[index].getSprite(), 109, 201);
+        };
+        Play.prototype.initializeBabies = function () {
+            this.babies = new Array();
+            for (var i = 0; i < (this.gameLevel + 5); i++) {
+                this.babies.push(new BabyTrader.Baby());
+            }
+        };
+        Play.prototype.displayBabies = function (index) {
+            this.sprite_baby = displaySpriteOnScreen(this.game, this.sprite_baby, this.babies[index].getSprite(), 375, 217);
+        };
+        Play.releaseTalentCheat = function (currentObject) {
+            if (currentObject.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX) {
+                currentObject.cheatGauge_value = 0;
             }
         };
         Play.prototype.resetCheatGauge = function () {
@@ -135,20 +158,32 @@ var BabyTrader;
             this.overlay = displaySolidBackground(this.game, this.overlay, BabyTrader.Const.GOAL_BACKGROUND, 1);
             this.sprite_panel = displaySpriteOnScreen(this.game, this.sprite_panel, 'resultScreen_panel', 401, 252);
             this.sprite_panelTitle = displaySpriteOnScreen(this.game, this.sprite_panelTitle, panelTitleSpriteName, 393, 144);
-            this.button_start = displaySpriteButtonOnScreen(this, this.button_start, goButtonSpriteName, goButtonInvSpriteName, this.removePanelDisplayScreen, 526, 487);
-            this.button_backToTitle = displaySpriteButtonOnScreen(this, this.button_backToTitle, 'resultScreen_backToTitleButton', 'resultScreen_backToTitleButton_inv', this.goBackToTitle, 292, 487);
-            this.text_time = displayTextOnScreen(this.game, this.text_time, this.getTimeInFormat(this.gameTime_initial - this.gameTime), this.greenFontStyle, 564, 215, 1, 0);
-            this.text_money = displayTextOnScreen(this.game, this.text_money, '$' + String(this.money_current), this.greenFontStyle, 564, 281, 1, 0);
-            this.text_goal = displayTextOnScreen(this.game, this.text_goal, '$' + String(this.money_goal), this.greenFontStyle, 564, 347, 1, 0);
+            this.button_start = displaySpriteButtonOnScreen(this, this.button_start, goButtonSpriteName, goButtonInvSpriteName, BabyTrader.Play.removePanelDisplayScreen, 526, 487);
+            this.button_backToTitle = displaySpriteButtonOnScreen(this, this.button_backToTitle, 'resultScreen_backToTitleButton', 'resultScreen_backToTitleButton_inv', BabyTrader.Play.goBackToTitle, 292, 487);
+            this.text_time = displayTextOnScreen(this.game, this.text_time, BabyTrader.Play.getTimeInFormat(this.gameTime_initial - this.gameTime), BabyTrader.Play.greenFontStyle, 564, 215, 1, 0);
+            this.text_money = displayTextOnScreen(this.game, this.text_money, '$' + String(this.money_current), BabyTrader.Play.greenFontStyle, 564, 281, 1, 0);
+            this.text_goal = displayTextOnScreen(this.game, this.text_goal, '$' + String(this.money_goal), BabyTrader.Play.greenFontStyle, 564, 347, 1, 0);
             this.reduceGameLevel();
         };
-        Play.prototype.removePanelDisplayScreen = function (currentObject) {
-            currentObject.overlay.destroy();
-            currentObject.sprite_panel.destroy();
-            currentObject.button_start.destroy();
-            currentObject.button_backToTitle.destroy();
-            currentObject.text_money.destroy();
-            currentObject.text_time.destroy();
+        Play.removePanelDisplayScreen = function (currentObject) {
+            if (currentObject.overlay) {
+                currentObject.overlay.destroy();
+            }
+            if (currentObject.sprite_panel) {
+                currentObject.sprite_panel.destroy();
+            }
+            if (currentObject.button_start) {
+                currentObject.button_start.destroy();
+            }
+            if (currentObject.button_backToTitle) {
+                currentObject.button_backToTitle.destroy();
+            }
+            if (currentObject.text_money) {
+                currentObject.text_money.destroy();
+            }
+            if (currentObject.text_time) {
+                currentObject.text_time.destroy();
+            }
             if (currentObject.text_goal) {
                 currentObject.text_goal.destroy();
             }
@@ -158,6 +193,15 @@ var BabyTrader;
             if (currentObject.cheatGauge_sprite) {
                 currentObject.cheatGauge_sprite.destroy();
             }
+            if (currentObject.sprite_customer) {
+                currentObject.sprite_customer.destroy();
+            }
+            if (currentObject.sprite_baby) {
+                currentObject.sprite_baby.destroy();
+            }
+            if (currentObject.customerDialogLocation) {
+                currentObject.customerDialogLocation.destroy();
+            }
             currentObject.isPreparationDone = true;
         };
         Play.prototype.setupTimeAndMoney = function () {
@@ -166,19 +210,19 @@ var BabyTrader;
             this.gameTime_initial = this.gameTime;
             this.gameLevel++;
         };
-        Play.prototype.pauseOrResumeGame = function (currentObject) {
+        Play.pauseOrResumeGame = function (currentObject) {
             if (!currentObject.pauseState) {
                 currentObject.pauseState = true;
                 currentObject.game.time.events.pause();
-                currentObject.setButtonInputs(currentObject, false);
+                BabyTrader.Play.setButtonInputs(currentObject, false);
             }
             else {
                 currentObject.pauseState = false;
                 currentObject.game.time.events.resume();
-                currentObject.setButtonInputs(currentObject, true);
+                BabyTrader.Play.setButtonInputs(currentObject, true);
             }
         };
-        Play.prototype.setButtonInputs = function (currentObject, trueOrFalse) {
+        Play.setButtonInputs = function (currentObject, trueOrFalse) {
             currentObject.button_arrowLeft.inputEnabled = trueOrFalse;
             currentObject.button_arrowRight.inputEnabled = trueOrFalse;
             currentObject.button_business.inputEnabled = trueOrFalse;
@@ -187,20 +231,26 @@ var BabyTrader;
         };
         Play.prototype.startGame = function () {
             this.gameMode = BabyTrader.Const.GAMEMODE_PLAY;
-            this.text_money = displayTextOnScreen(this.game, this.text_money, '', this.greenFontStyle, 461, 471, 1, 0);
-            this.text_time = displayTextOnScreen(this.game, this.text_time, '', this.greenFontStyle, 572, 471, 1, 0);
+            this.text_money = displayTextOnScreen(this.game, this.text_money, '', BabyTrader.Play.greenFontStyle, 461, 471, 1, 0);
+            this.text_time = displayTextOnScreen(this.game, this.text_time, '', BabyTrader.Play.greenFontStyle, 572, 471, 1, 0);
             this.game.time.events.repeat(Phaser.Timer.SECOND * 1, this.gameTime, this.decrementSecond, this);
             this.resetCheatGauge();
             this.game.time.events.start();
             this.game.time.events.loop(Phaser.Timer.SECOND * 1, this.increaseCheatGauge, this);
             this.cheatGauge_sprite = displaySolidRectangular(this.game, this.cheatGauge_sprite, BabyTrader.Const.GREENCOLOR, 1, 190, 18, 245, 553);
+            // customers and babies setting
+            this.initializeBabies();
+            this.initializeCustomers();
+            this.displayBabies(0);
+            this.displayCustomers(0);
+            this.printDialog(this.customers[0].greet());
         };
         Play.prototype.decrementSecond = function () {
             if (this.gameTime > 0) {
                 this.gameTime--;
             }
         };
-        Play.prototype.goBackToTitle = function (currentObject) {
+        Play.goBackToTitle = function (currentObject) {
             currentObject.gameLevel = 0;
             currentObject.game.state.start('title');
         };
@@ -208,20 +258,20 @@ var BabyTrader;
             this.gameMode = BabyTrader.Const.GAMEMODE_GOAL;
             this.overlay = displaySolidBackground(this.game, this.overlay, BabyTrader.Const.GOAL_BACKGROUND, 1);
             this.sprite_panel = displaySpriteOnScreen(this.game, this.sprite_panel, 'goalScreen_panel', 401, 250);
-            this.button_start = displaySpriteButtonOnScreen(this, this.button_start, 'goalScreen_startButton', 'goalScreen_startButton_inv', this.removePanelDisplayScreen, 526, 452);
-            this.button_backToTitle = displaySpriteButtonOnScreen(this, this.button_backToTitle, 'goalScreen_backToTitleButton', 'goalScreen_backToTitleButton_inv', this.goBackToTitle, 263, 452);
-            this.text_money = displayTextOnScreen(this.game, this.text_money, '', this.greenFontStyle, 564, 246, 1, 0);
-            this.text_time = displayTextOnScreen(this.game, this.text_time, '', this.greenFontStyle, 564, 312, 1, 0);
+            this.button_start = displaySpriteButtonOnScreen(this, this.button_start, 'goalScreen_startButton', 'goalScreen_startButton_inv', BabyTrader.Play.removePanelDisplayScreen, 526, 452);
+            this.button_backToTitle = displaySpriteButtonOnScreen(this, this.button_backToTitle, 'goalScreen_backToTitleButton', 'goalScreen_backToTitleButton_inv', BabyTrader.Play.goBackToTitle, 263, 452);
+            this.text_money = displayTextOnScreen(this.game, this.text_money, '', BabyTrader.Play.greenFontStyle, 564, 246, 1, 0);
+            this.text_time = displayTextOnScreen(this.game, this.text_time, '', BabyTrader.Play.greenFontStyle, 564, 312, 1, 0);
         };
         Play.prototype.updateText = function () {
             if (this.text_money) {
                 this.text_money.setText("$" + String(this.money_goal - this.money_current));
             }
             if (this.text_time) {
-                this.text_time.setText(this.getTimeInFormat(this.gameTime));
+                this.text_time.setText(BabyTrader.Play.getTimeInFormat(this.gameTime));
             }
         };
-        Play.prototype.getTimeInFormat = function (timeInSecond) {
+        Play.getTimeInFormat = function (timeInSecond) {
             var hour = Math.floor(timeInSecond / 60);
             var minute = timeInSecond;
             var format = "";
@@ -233,11 +283,7 @@ var BabyTrader;
             }
             return String(hour) + ":" + format + minute;
         };
-        Play.prototype.startDialog = function () {
-            if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && !this.pauseState) {
-                console.log("activated");
-            }
-        };
+        Play.greenFontStyle = { font: "900 26px Sarpanch", fill: BabyTrader.Const.GREENCOLOR_STRING, align: "right" };
         return Play;
     })(Phaser.State);
     BabyTrader.Play = Play;

@@ -31,12 +31,12 @@ var BabyTrader;
             setupKeyboardHotkeys(this.game, this.key_skip, Phaser.Keyboard.ESC, function () { this.game.state.start("play"); }, this);
             // set the bg color
             this.game.stage.backgroundColor = BabyTrader.Const.PROLOGUE_BACKGROUND;
-            // after certain time, it will skip to the next state
-            this.game.time.events.add(Phaser.Timer.SECOND * 10, this.skipToPlay, this);
             // text printing start
             this.dialogLocation = displayTextOnScreen(this.game, this.dialogLocation, '', { font: "bold 18px Arial", fill: "#ffffff", align: "center" }, this.game.world.centerX, 500);
             // start prologue
             this.game.time.events.add(Phaser.Timer.SECOND * 1, this.startPrologue, this);
+            // when the prologue texts are all printed, go to the next state
+            this.game.time.events.onComplete.add(this.endPrologue, this);
         };
         Prologue.prototype.update = function () {
         };
@@ -51,7 +51,7 @@ var BabyTrader;
             addFadeTweenToSprite(this.game, this.prologueSprite, 0, 1, 1000);
             BabyTrader.Dialog.startDialog(this.game, this.dialogLocation, BabyTrader.Dialog.prologue);
         };
-        Prologue.prototype.skipToPlay = function () {
+        Prologue.prototype.endPrologue = function () {
             addFadeTweenToSprite(this.game, this.prologueSprite, 1, 0, 1000);
             this.dialogLocation.destroy();
             var nextStateFunction = function () {

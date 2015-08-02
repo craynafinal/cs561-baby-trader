@@ -12,28 +12,25 @@ module BabyTrader {
         public static get prologue(): string[] {
             return [
                 "Welcome to my shop.",
-                "Welcome to my shop.",
                 "Please let me introduce my self.",
                 "I am the Baby Trader.",
-                "It is my honer to grant your wish.",
-                "Have you ever thought about ",
-                "03:45, November 4th, 2014",
-                "somewhere in the north pacific",
-                "mission control bravo ..."
+                "It is my honer to grant your wish."
             ];
         };
 
         private static game = null;
         private static dialogLocation = null;
         private static dialogContent = null;
-        private static dialogIndex = 0;
+        private static dialogIndex = -1;
         private static dialogLine = '';
 
         public static startDialog(game, dialogLocation, dialogContent) {
             this.game = game;
             this.dialogLocation = dialogLocation;
             this.dialogContent = dialogContent;
+            this.dialogIndex = -1;
             this.nextLine();
+            return dialogLocation;
         }
 
         private static nextLine() {

@@ -19,6 +19,25 @@ function stopBackgroundSound() {
     globalBgm.stop();
     globalBgm = null;
 }
+function insertAttributeToArrayAsSet(array, maxNumberToAdd) {
+    var i = 0;
+    while (i < maxNumberToAdd) {
+        var temp = new BabyTrader.Attribute();
+        var check = false;
+        var j = 0;
+        while (!check && (j < array.length)) {
+            if (array[j] == temp) {
+                check = true;
+            }
+            j++;
+        }
+        if (!check) {
+            array.push(temp);
+            i++;
+        }
+    }
+    return array;
+}
 function setupKeyboardHotkeys(gameVariable, keyVariable, keyboardKey, keyMethod, keyThis) {
     keyVariable = gameVariable.input.keyboard.addKey(keyboardKey);
     keyVariable.onDown.add(keyMethod, keyThis);
@@ -88,5 +107,8 @@ function displaySolidRectangular(game, graphicObject, color, opacity, width, hei
     graphicObject.endFill();
     graphicObject.inputEnabled = true;
     return graphicObject;
+}
+function getRandomNumber(max) {
+    return Math.floor(Math.random() * max);
 }
 //# sourceMappingURL=global.js.map

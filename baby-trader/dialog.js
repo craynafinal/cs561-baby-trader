@@ -15,14 +15,9 @@ var BabyTrader;
             get: function () {
                 return [
                     "Welcome to my shop.",
-                    "Welcome to my shop.",
                     "Please let me introduce my self.",
                     "I am the Baby Trader.",
-                    "It is my honer to grant your wish.",
-                    "Have you ever thought about ",
-                    "03:45, November 4th, 2014",
-                    "somewhere in the north pacific",
-                    "mission control bravo ..."
+                    "It is my honer to grant your wish."
                 ];
             },
             enumerable: true,
@@ -33,7 +28,9 @@ var BabyTrader;
             this.game = game;
             this.dialogLocation = dialogLocation;
             this.dialogContent = dialogContent;
+            this.dialogIndex = -1;
             this.nextLine();
+            return dialogLocation;
         };
         Dialog.nextLine = function () {
             this.dialogIndex++;
@@ -54,7 +51,7 @@ var BabyTrader;
         Dialog.game = null;
         Dialog.dialogLocation = null;
         Dialog.dialogContent = null;
-        Dialog.dialogIndex = 0;
+        Dialog.dialogIndex = -1;
         Dialog.dialogLine = '';
         return Dialog;
     })();

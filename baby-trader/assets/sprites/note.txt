@@ -1,3 +1,9 @@
+checkavailability 알고리즘 확인
+아기쪽 완성시키고
+
+
+
+
 location based on anchor(.5)
 
 light gray bg: afb3b6

@@ -10,28 +10,29 @@ Please see the file COPYING in the source distribution of this software for lice
 module BabyTrader {
     export class Const {
 
-        private static color_lightGray = "#afb3b6";
-        private static color_darkGray = "#2f3a42";
-        private static color_medGray = "#637079";
-
+        private static color_lightGray_str = "#afb3b6";
+        private static color_darkGray_str = "#2f3a42";
+        private static color_medGray_str = "#637079";
+        private static color_lightGray_hex = 0xafb3b6;
+        
         public static get TITLE_BACKGROUND(): string {
-            return this.color_lightGray;
+            return this.color_lightGray_str;
         };
 
         public static get PROLOGUE_BACKGROUND(): string {
-            return this.color_darkGray;
+            return this.color_darkGray_str;
         };
 
         public static get TEMPLATE_BACKGROUND(): string {
-            return this.color_medGray;
+            return this.color_medGray_str;
         };
 
-        public static get BEGIN_BACKGROUND(): string {
-            return this.color_lightGray;
+        public static get GOAL_BACKGROUND(): number {
+            return this.color_lightGray_hex;
         };
 
         public static get BOOT_BACKGROUND(): string {
-            return this.color_lightGray;
+            return this.color_lightGray_str;
         };
 
         public static get GAMESCREEN_WIDTH(): number {
@@ -42,12 +43,36 @@ module BabyTrader {
             return 600;
         };
 
-        public static get FADE_COLOR() {
-            return 0x2f3a42;
-        };
-
         public static get BITMAP_FONT(): string {
             return 'carrier_command';
+        };
+
+        public static get GAMEMODE_GOAL(): number {
+            return 0;
+        };
+
+        public static get GAMEMODE_PLAY(): number {
+            return 1;
+        };
+
+        public static get GAMEMODE_RESULT(): number {
+            return 2;
+        };
+
+        public static get CHEATGAUGE_MAX(): number {
+            return 190;
+        };
+
+        public static get YELLOWCOLOR(): number {
+            return 0xffff00;
+        };
+
+        public static get GREENCOLOR(): number {
+            return 0x35eb35;
+        };
+
+        public static get GREENCOLOR_STRING(): string {
+            return "#35eb35";
         };
     }
 } 

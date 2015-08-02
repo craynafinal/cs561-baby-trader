@@ -54,15 +54,17 @@ module BabyTrader {
             this.game.load.image('goalScreen_panel', 'assets/sprites/goalScreen_panel_401x250.png');
             this.game.load.image('goalScreen_startButton', 'assets/sprites/goalScreen_startButton_526x452.png');
             this.game.load.image('goalScreen_startButton_inv', 'assets/sprites/goalScreen_startButton_inv_526x452.png');
-            this.game.load.image('goalScreen_titleFail', 'assets/sprites/goalScreen_titleFail_393x144.png');
-            this.game.load.image('goalScreen_titleSuccess', 'assets/sprites/goalScreen_titleSuccess_393x144.png');
-
+            
             // sprites: result screen
             this.game.load.image('resultScreen_backToTitleButton', 'assets/sprites/resultScreen_backToTitleButton_292x487.png');
             this.game.load.image('resultScreen_backToTitleButton_inv', 'assets/sprites/resultScreen_backToTitleButton_inv_292x487.png');
             this.game.load.image('resultScreen_nextLevelButton', 'assets/sprites/resultScreen_nextLevelButton_526x487.png');
             this.game.load.image('resultScreen_nextLevelButton_inv', 'assets/sprites/resultScreen_nextLevelButton_inv_526x487.png');
+            this.game.load.image('resultScreen_tryAgainButton', 'assets/sprites/resultScreen_tryAgainButton_526x487.png');
+            this.game.load.image('resultScreen_tryAgainButton_inv', 'assets/sprites/resultScreen_tryAgainButton_inv_526x487.png');
             this.game.load.image('resultScreen_panel', 'assets/sprites/resultScreen_panel_401x252.png');
+            this.game.load.image('resultScreen_titleFail', 'assets/sprites/resultScreen_titleFail_393x144.png');
+            this.game.load.image('resultScreen_titleSuccess', 'assets/sprites/resultScreen_titleSuccess_393x144.png');
 
             // sprites: template
             this.game.load.image('template_arrowLeft', 'assets/sprites/template_arrowLeft_543x380.png');

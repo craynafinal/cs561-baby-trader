@@ -16,7 +16,7 @@ function playBackgroundSound(game, music: string) {
 
     globalBgm = game.add.audio(music);
     globalBgm.loop = true;
-    globalBgm.play();
+    //globalBgm.play();
 }
 
 function stopBackgroundSound() {
@@ -86,9 +86,13 @@ function addFadeTweenToSprite(game, sprite, startOpacity: number, endOpacity: nu
 }
 
 function displaySolidBackground(game, graphicObject, color, opacity: number) {
+    return displaySolidRectangular(game, graphicObject, color, opacity, BabyTrader.Const.GAMESCREEN_WIDTH, BabyTrader.Const.GAMESCREEN_HEIGHT, 0, 0);
+}
+
+function displaySolidRectangular(game, graphicObject, color, opacity: number, width: number, height: number, x: number, y: number) {
     graphicObject = game.add.graphics(0, 0);
     graphicObject.beginFill(color, opacity);
-    graphicObject.drawRect(0, 0, BabyTrader.Const.GAMESCREEN_WIDTH, BabyTrader.Const.GAMESCREEN_HEIGHT);
+    graphicObject.drawRect(x, y, width, height);
     graphicObject.endFill();
     graphicObject.inputEnabled = true;
     return graphicObject;

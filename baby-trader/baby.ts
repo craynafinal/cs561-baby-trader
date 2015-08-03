@@ -11,7 +11,6 @@ module BabyTrader {
     export class Baby {
         constructor() {
             // set gender first
-            console.log(getRandomNumber(2));
             this.gender = (getRandomNumber(2) >= 1) ? true : false;
 
             if (this.gender) {

@@ -18,7 +18,7 @@ var BabyTrader;
         function Customer() {
             this.attributes = new Array();
             this.sprite = null;
-            insertAttributeToArrayAsSet(this.attributes, BabyTrader.Customer.attributes_max);
+            this.attributes = insertAttributeToArrayAsSet(this.attributes, BabyTrader.Customer.attributes_max);
             this.sprite = BabyTrader.Customer.customerSprites[getRandomNumber(BabyTrader.Customer.customerSprites.length)];
         }
         Customer.prototype.getSprite = function () {

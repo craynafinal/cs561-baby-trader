@@ -15,7 +15,6 @@ var BabyTrader;
             this.month = 0;
             this.price = 0;
             // set gender first
-            console.log(getRandomNumber(2));
             this.gender = (getRandomNumber(2) >= 1) ? true : false;
             if (this.gender) {
                 this.name = BabyTrader.Baby.names_male[getRandomNumber(BabyTrader.Baby.names_male.length)];

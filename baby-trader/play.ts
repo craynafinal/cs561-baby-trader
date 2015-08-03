@@ -48,6 +48,8 @@ module BabyTrader {
         private text_babyName = null;
         private text_babyAgeAndPrice = null;
         private text_babyAttributes = null;
+        private baby_index: number = 0;
+        private customer_index: number = 0;
         
         preload() {
         }
@@ -72,9 +74,9 @@ module BabyTrader {
             }
 
             // button setups
-            this.button_arrowLeft = displaySpriteButtonOnScreen(this, this.button_arrowLeft, 'template_arrowLeft', 'template_arrowLeft_inv', null, 543, 380);
-            this.button_arrowRight = displaySpriteButtonOnScreen(this, this.button_arrowRight, 'template_arrowRight', 'template_arrowRight_inv', null, 762, 380);
-            this.button_business = displaySpriteButtonOnScreen(this, this.button_business, 'template_businessButton', 'template_businessButton_inv', null, 693, 536);
+            this.button_arrowLeft = displaySpriteButtonOnScreen(this, this.button_arrowLeft, 'template_arrowLeft', 'template_arrowLeft_inv', BabyTrader.Play.displayPreviousBaby, 543, 380);
+            this.button_arrowRight = displaySpriteButtonOnScreen(this, this.button_arrowRight, 'template_arrowRight', 'template_arrowRight_inv', BabyTrader.Play.displayNextBaby, 762, 380);
+            this.button_business = displaySpriteButtonOnScreen(this, this.button_business, 'template_businessButton', 'template_businessButton_inv', BabyTrader.Play.businessButtonAction, 693, 536);
             this.button_charge = displaySpriteButtonOnScreen(this, this.button_charge, 'template_chargeButton', 'template_chargeButton_inv', chatGaugeFunction, 553, 562);
             this.button_pause = displaySpriteButtonOnScreen(this, this.button_pause, 'template_pauseButton', 'template_pauseButton_inv', BabyTrader.Play.pauseOrResumeGame, 693, 466);
             this.button_talent = displaySpriteButtonOnScreen(this, this.button_talent, 'template_talentButton', 'template_talentButton_inv', BabyTrader.Play.releaseTalentCheat, 487, 562);
@@ -123,8 +125,33 @@ module BabyTrader {
             }
         }
         
-        printDialog(dialogs) {
-            Dialog.startDialog(this.game, this.customerDialogLocation, dialogs);
+        static businessButtonAction(currentObject) {
+            var currentCustomer = currentObject.customers[currentObject.customer_index];
+            var currentBaby = currentObject.babies[currentObject.baby_index];
+
+            if (currentCustomer.checkAvailability(currentBaby.getAttributes())) {
+                BabyTrader.Play.printDialog(currentObject, currentCustomer.accept());
+            } else {
+                BabyTrader.Play.printDialog(currentObject, currentCustomer.reject());
+            }
+        }
+
+        static displayNextBaby(currentObject) {
+            if (currentObject.baby_index < currentObject.babies.length - 2) {
+                currentObject.baby_index++;
+                BabyTrader.Play.displayBabies(currentObject, currentObject.baby_index);
+            }
+        }
+
+        static displayPreviousBaby(currentObject) {
+            if (currentObject.baby_index > 0) {
+                currentObject.baby_index--;
+                BabyTrader.Play.displayBabies(currentObject, currentObject.baby_index);
+            }
+        }
+
+        static printDialog(currentObject, dialogs) {
+            Dialog.startDialog(currentObject.game, currentObject.customerDialogLocation, dialogs);
         }
 
         initializeCustomers() {
@@ -135,6 +162,7 @@ module BabyTrader {
 
             this.customerDialogLocation = displayTextOnScreen(this.game, this.customerDialogLocation, '', { font: "900 18px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left", wordWrap: true, wordWrapWidth: 160 }, 27, 363, 0, 0);
             this.customerDialogLocation.lineSpacing = -5;
+            this.customer_index = 0;
         }
 
         displayCustomers(index) {
@@ -146,38 +174,40 @@ module BabyTrader {
             for (var i = 0; i < (this.gameLevel + 5); i++) {
                 this.babies.push(new BabyTrader.Baby());
             }
+            this.baby_index = 0;
         }
 
-        displayBabies(index) {
-            if (this.sprite_baby) {
-                this.sprite_baby.destroy();
+        static displayBabies(currentObject, index) {
+            if (currentObject.sprite_baby) {
+                currentObject.sprite_baby.destroy();
             }
-            this.sprite_baby = displaySpriteOnScreen(this.game, this.sprite_baby, this.babies[index].getSprite(), 375, 217);
+            currentObject.sprite_baby = displaySpriteOnScreen(currentObject.game, currentObject.sprite_baby, currentObject.babies[index].getSprite(), 375, 217);
 
-            if (this.text_babyName) {
-                this.text_babyName.destroy();
+            if (currentObject.text_babyName) {
+                currentObject.text_babyName.destroy();
             }
-            this.text_babyName = displayTextOnScreen(this.game, this.text_babyName, this.babies[index].getName().toUpperCase(), { font: "900 26px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, 520, 40, 0, 0);
+            currentObject.text_babyName = displayTextOnScreen(currentObject.game, currentObject.text_babyName, currentObject.babies[index].getName().toUpperCase(), { font: "900 26px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, 520, 40, 0, 0);
 
-            if (this.text_babyAgeAndPrice) {
-                this.text_babyAgeAndPrice.destroy();
+            if (currentObject.text_babyAgeAndPrice) {
+                currentObject.text_babyAgeAndPrice.destroy();
             }
-            var months = this.babies[index].getMonth();
+            var months = currentObject.babies[index].getMonth();
             var monthString = months > 1 ? months + " Months" : months + " Month";
-            this.text_babyAgeAndPrice = displayTextOnScreen(this.game, this.text_babyAgeAndPrice, (monthString + "\nOnly $" + this.babies[index].getPrice()).toUpperCase(), { font: "900 18px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, 520, 66, 0, 0);
-            this.text_babyAgeAndPrice.lineSpacing = -5;
-            if (this.text_babyAttributes) {
-                this.text_babyAttributes.destroy();
+            currentObject.text_babyAgeAndPrice = displayTextOnScreen(currentObject.game, currentObject.text_babyAgeAndPrice, (monthString + "\nOnly $" + currentObject.babies[index].getPrice()).toUpperCase(), { font: "900 18px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, 520, 66, 0, 0);
+            currentObject.text_babyAgeAndPrice.lineSpacing = -5;
+            if (currentObject.text_babyAttributes) {
+                currentObject.text_babyAttributes.destroy();
             }
 
             var attributeStrings = "This baby's attributes:\n";
-            var attributeArray = this.babies[index].getAttributes();
+            var attributeArray = currentObject.babies[index].getAttributes();
             
             for (var i = 0; i < attributeArray.length; i++) {
-                attributeStrings = attributeStrings + "● " + attributeArray[i].getName() + "\n";
+                // somehow html symbol code does not work
+                attributeStrings = attributeStrings + "★ " + attributeArray[i].getName() + "\n";
             }
             
-            this.text_babyAttributes = displayTextOnScreen(this.game, this.text_babyAttributes, attributeStrings.toUpperCase(), { font: "900 16px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, 520, 125, 0, 0);
+            currentObject.text_babyAttributes = displayTextOnScreen(currentObject.game, currentObject.text_babyAttributes, attributeStrings.toUpperCase(), { font: "900 16px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, 520, 125, 0, 0);
         }
 
         static releaseTalentCheat(currentObject) {
@@ -317,9 +347,9 @@ module BabyTrader {
             // customers and babies setting
             this.initializeBabies();
             this.initializeCustomers();
-            this.displayBabies(0);
+            BabyTrader.Play.displayBabies(this, 0);
             this.displayCustomers(0);
-            this.printDialog(this.customers[0].greet());
+            BabyTrader.Play.printDialog(this, this.customers[0].greet());
         }
 
         decrementSecond() {

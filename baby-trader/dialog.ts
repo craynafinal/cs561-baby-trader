@@ -23,8 +23,18 @@ module BabyTrader {
         private static dialogContent = null;
         private static dialogIndex = -1;
         private static dialogLine = '';
+        private static nextLineCheck = null;
+        private static updateCheck = null;
 
         public static startDialog(game, dialogLocation, dialogContent) {
+            if (BabyTrader.Dialog.nextLineCheck) {
+                this.game.time.events.remove(BabyTrader.Dialog.nextLineCheck);
+            }
+            
+            if (BabyTrader.Dialog.updateCheck) {
+                this.game.time.events.remove(BabyTrader.Dialog.updateCheck);
+            }
+
             this.game = game;
             this.dialogLocation = dialogLocation;
             this.dialogContent = dialogContent;
@@ -38,7 +48,7 @@ module BabyTrader {
 
             if (this.dialogIndex < this.dialogContent.length) {
                 this.dialogLine = '';
-                this.game.time.events.repeat(80, this.dialogContent[this.dialogIndex].length + 1, this.updateLine, this);
+                BabyTrader.Dialog.updateCheck = this.game.time.events.repeat(80, this.dialogContent[this.dialogIndex].length + 1, BabyTrader.Dialog.updateLine, this);
             }
         }
 
@@ -48,7 +58,7 @@ module BabyTrader {
                 this.dialogLocation.setText(this.dialogLine.toUpperCase());
             }
             else {
-                this.game.time.events.add(Phaser.Timer.SECOND * 2, this.nextLine, this);
+                BabyTrader.Dialog.nextLineCheck = this.game.time.events.add(Phaser.Timer.SECOND * 2, BabyTrader.Dialog.nextLine, this);
             }
         }
     }

@@ -25,6 +25,12 @@ var BabyTrader;
         });
         ;
         Dialog.startDialog = function (game, dialogLocation, dialogContent) {
+            if (BabyTrader.Dialog.nextLineCheck) {
+                this.game.time.events.remove(BabyTrader.Dialog.nextLineCheck);
+            }
+            if (BabyTrader.Dialog.updateCheck) {
+                this.game.time.events.remove(BabyTrader.Dialog.updateCheck);
+            }
             this.game = game;
             this.dialogLocation = dialogLocation;
             this.dialogContent = dialogContent;
@@ -36,7 +42,7 @@ var BabyTrader;
             this.dialogIndex++;
             if (this.dialogIndex < this.dialogContent.length) {
                 this.dialogLine = '';
-                this.game.time.events.repeat(80, this.dialogContent[this.dialogIndex].length + 1, this.updateLine, this);
+                BabyTrader.Dialog.updateCheck = this.game.time.events.repeat(80, this.dialogContent[this.dialogIndex].length + 1, BabyTrader.Dialog.updateLine, this);
             }
         };
         Dialog.updateLine = function () {
@@ -45,7 +51,7 @@ var BabyTrader;
                 this.dialogLocation.setText(this.dialogLine.toUpperCase());
             }
             else {
-                this.game.time.events.add(Phaser.Timer.SECOND * 2, this.nextLine, this);
+                BabyTrader.Dialog.nextLineCheck = this.game.time.events.add(Phaser.Timer.SECOND * 2, BabyTrader.Dialog.nextLine, this);
             }
         };
         Dialog.game = null;
@@ -53,6 +59,8 @@ var BabyTrader;
         Dialog.dialogContent = null;
         Dialog.dialogIndex = -1;
         Dialog.dialogLine = '';
+        Dialog.nextLineCheck = null;
+        Dialog.updateCheck = null;
         return Dialog;
     })();
     BabyTrader.Dialog = Dialog;

@@ -8,12 +8,6 @@ Please see the file COPYING in the source distribution of this software for lice
 ****************************************************************************************/
 var BabyTrader;
 (function (BabyTrader) {
-    var CustomerStatus;
-    (function (CustomerStatus) {
-        CustomerStatus[CustomerStatus["Buy"] = 0] = "Buy";
-        CustomerStatus[CustomerStatus["Sell"] = 1] = "Sell";
-        CustomerStatus[CustomerStatus["Return"] = 2] = "Return";
-    })(CustomerStatus || (CustomerStatus = {}));
     var Customer = (function () {
         function Customer() {
             this.attributes = new Array();
@@ -26,15 +20,6 @@ var BabyTrader;
         };
         Customer.prototype.greet = function () {
             var returnString = BabyTrader.Customer.greetStrings[getRandomNumber(BabyTrader.Customer.greetStrings.length)] + BabyTrader.Customer.getSummedAttributeStrings(this.attributes, '?');
-            /*
-            this.attributes.forEach(function (attribute, index, array) {
-                returnString = returnString + " " + attribute.getDescription();
-                if (index < array.length - 1) {
-                    returnString = returnString + ",";
-                } else {
-                    returnString = returnString + "?";
-                }
-            });*/
             return [returnString];
         };
         Customer.getSummedAttributeStrings = function (attributes, lastCharacter) {
@@ -56,11 +41,37 @@ var BabyTrader;
         Customer.prototype.accept = function () {
             return [BabyTrader.Customer.acceptStrings[getRandomNumber(BabyTrader.Customer.acceptStrings.length)]];
         };
-        Customer.prototype.checkAvailability = function (babyAttributes) {
-            var returnCheck = false;
+        Customer.prototype.checkElementAvailability = function (babyAttribute) {
+            var index = 0;
+            var check = false;
+            while (!check && (index < this.attributes.length - 1)) {
+                if (this.attributes[index].getName() == babyAttribute.getName()) {
+                    console.log(this.attributes[index].getName() + " " + babyAttribute.getName());
+                    check = true;
+                }
+                else {
+                    index++;
+                }
+            }
+            return check;
+        };
+        Customer.prototype.checkElementsAvailability = function (babyAttributes) {
+            var index = 0;
+            var check = false;
+            while (!check && (index < babyAttributes.length - 1)) {
+                if (this.checkElementAvailability(babyAttributes[index])) {
+                    check = true;
+                }
+                else {
+                    index++;
+                }
+            }
+            return check;
+            /*var returnCheck = false;
             var eachCheck = false;
             var index = 0;
             var babyIndex = 0;
+
             while (index < this.attributes.length) {
                 while (!eachCheck && (babyIndex < babyAttributes.length)) {
                     if (this.attributes[index] == babyAttributes[babyIndex]) {
@@ -68,15 +79,16 @@ var BabyTrader;
                     }
                     babyIndex++;
                 }
+
                 if (eachCheck) {
                     index++;
                     babyIndex = 0;
-                }
-                else {
+                } else {
                     index = this.attributes.length + 1;
                 }
             }
-            return returnCheck;
+
+            return returnCheck;*/
         };
         Customer.attributes_max = 3;
         Customer.greetStrings = [

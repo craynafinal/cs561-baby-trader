@@ -47,18 +47,6 @@ module BabyTrader {
             return 'carrier_command';
         };
 
-        public static get GAMEMODE_GOAL(): number {
-            return 0;
-        };
-
-        public static get GAMEMODE_PLAY(): number {
-            return 1;
-        };
-
-        public static get GAMEMODE_RESULT(): number {
-            return 2;
-        };
-
         public static get CHEATGAUGE_MAX(): number {
             return 190;
         };

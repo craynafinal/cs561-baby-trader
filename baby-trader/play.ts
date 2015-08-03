@@ -8,6 +8,9 @@ Please see the file COPYING in the source distribution of this software for lice
 ****************************************************************************************/
 
 module BabyTrader {
+
+    enum GameMode { Goal, Play, Result }
+
     export class Play extends Phaser.State {
         constructor() {
             super();
@@ -39,7 +42,7 @@ module BabyTrader {
         private isPreparationDone: boolean = false;
         private cheatGauge_sprite = null;
         private cheatGauge_value: number = 0;
-        private gameMode: number = BabyTrader.Const.GAMEMODE_GOAL;
+        private gameMode: number = GameMode.Goal;
         private babies = null;
         private customers = null;
         private sprite_baby = null;
@@ -68,7 +71,7 @@ module BabyTrader {
             this.sprite_template = displaySpriteOnScreen(this.game, this.sprite_template, 'template_template', 0, 0, 0, 0);
 
             var chatGaugeFunction = function (currentObject) {
-                if (currentObject.cheatGauge_value < BabyTrader.Const.CHEATGAUGE_MAX) {
+                if (currentObject.gameMode == GameMode.Play && (currentObject.cheatGauge_value < BabyTrader.Const.CHEATGAUGE_MAX)) {
                     currentObject.cheatGauge_value = currentObject.cheatGauge_value + 5;
                 }
             }
@@ -86,22 +89,22 @@ module BabyTrader {
         }
 
         update() {
-            if (this.gameMode == BabyTrader.Const.GAMEMODE_GOAL || this.gameMode == BabyTrader.Const.GAMEMODE_PLAY) {
+            if (this.gameMode == GameMode.Goal || this.gameMode == GameMode.Play) {
                 this.updateText();
             }
 
-            if (this.gameMode == BabyTrader.Const.GAMEMODE_GOAL && this.isPreparationDone) {
+            if (this.gameMode == GameMode.Goal && this.isPreparationDone) {
                 this.isPreparationDone = false;
                 this.startGame();
             }
 
-            if (this.gameMode == BabyTrader.Const.GAMEMODE_PLAY && (this.gameTime == 0 || this.money_current >= this.money_goal)) {
+            if (this.gameMode == GameMode.Play && (this.gameTime == 0 || this.money_current >= this.money_goal)) {
                 this.game.time.events.stop();
-                this.removePlayScreen();
-                this.displayResultScreen();
+                BabyTrader.Play.removePlayScreen(this);
+                BabyTrader.Play.displayResultScreen(this);
             }
 
-            if (this.gameMode == BabyTrader.Const.GAMEMODE_PLAY && this.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX) {
+            if (this.gameMode == GameMode.Play && this.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX) {
                 //BabyTrader.Const.YELLOWCOLOR
                 //this.cheatGauge_sprite.graphicsData[0].fillColor = 0xffff00;
 
@@ -113,12 +116,12 @@ module BabyTrader {
                 //this.cheatGauge_sprite.graphicsData[0].tint = BabyTrader.Const.YELLOWCOLOR;
             }
 
-            if (this.gameMode == BabyTrader.Const.GAMEMODE_PLAY && this.cheatGauge_sprite) {
+            if (this.gameMode == GameMode.Play && this.cheatGauge_sprite) {
                 this.cheatGauge_sprite.destroy();
                 this.cheatGauge_sprite = displaySolidRectangular(this.game, this.cheatGauge_sprite, BabyTrader.Const.GREENCOLOR, 1, this.cheatGauge_value, 18, 245, 553);
             }
 
-            if (this.gameMode == BabyTrader.Const.GAMEMODE_RESULT && this.isPreparationDone) {
+            if (this.gameMode == GameMode.Result && this.isPreparationDone) {
                 this.isPreparationDone = false;
                 this.setupTimeAndMoney();
                 this.displayGoalScreen();
@@ -126,26 +129,53 @@ module BabyTrader {
         }
         
         static businessButtonAction(currentObject) {
-            var currentCustomer = currentObject.customers[currentObject.customer_index];
-            var currentBaby = currentObject.babies[currentObject.baby_index];
+            if (currentObject.gameMode == GameMode.Play) {
+                var currentCustomer = currentObject.customers[currentObject.customer_index];
+                var currentBaby = currentObject.babies[currentObject.baby_index];
 
-            if (currentCustomer.checkAvailability(currentBaby.getAttributes())) {
-                BabyTrader.Play.printDialog(currentObject, currentCustomer.accept());
-            } else {
-                BabyTrader.Play.printDialog(currentObject, currentCustomer.reject());
+                if (currentCustomer.checkElementsAvailability(currentBaby.getAttributes())) {
+                    currentObject.money_current += currentBaby.getPrice();
+                    BabyTrader.Play.printDialog(currentObject, currentCustomer.accept());
+                    if (currentObject.customer_index < currentObject.customers.length - 2) {
+                        // more customers available
+                        BabyTrader.Play.displayCustomers(currentObject, currentObject.customer_index++);
+                    } else {
+                        // no more customers left, stop the game level
+                        currentObject.game.time.events.stop();
+                        BabyTrader.Play.removePlayScreen(currentObject);
+                        BabyTrader.Play.displayResultScreen(currentObject);
+                    }
+
+                } else {
+                    BabyTrader.Play.printDialog(currentObject, currentCustomer.reject());
+                }
             }
         }
 
         static displayNextBaby(currentObject) {
-            if (currentObject.baby_index < currentObject.babies.length - 2) {
-                currentObject.baby_index++;
+            if (currentObject.gameMode == GameMode.Play) {
+
+                // mod operator not working?
+                if (currentObject.baby_index < currentObject.babies.length - 2) {
+                    currentObject.baby_index++;
+                } else {
+                    currentObject.baby_index = 0;
+                }
+
                 BabyTrader.Play.displayBabies(currentObject, currentObject.baby_index);
             }
         }
 
         static displayPreviousBaby(currentObject) {
-            if (currentObject.baby_index > 0) {
-                currentObject.baby_index--;
+            if (currentObject.gameMode == GameMode.Play) {
+
+                // mod operator not working?
+                if (currentObject.baby_index > 0) {
+                    currentObject.baby_index--;
+                } else {
+                    currentObject.baby_index = currentObject.babies.length - 1;
+                }
+
                 BabyTrader.Play.displayBabies(currentObject, currentObject.baby_index);
             }
         }
@@ -165,8 +195,8 @@ module BabyTrader {
             this.customer_index = 0;
         }
 
-        displayCustomers(index) {
-            this.sprite_customer = displaySpriteOnScreen(this.game, this.sprite_customer, this.customers[index].getSprite(), 109, 201);
+        static displayCustomers(currentObject, index) {
+            currentObject.sprite_customer = displaySpriteOnScreen(currentObject.game, currentObject.sprite_customer, currentObject.customers[index].getSprite(), 109, 201);
         }
 
         initializeBabies() {
@@ -211,8 +241,40 @@ module BabyTrader {
         }
 
         static releaseTalentCheat(currentObject) {
-            if (currentObject.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX) {
+            if (currentObject.gameMode == GameMode.Play && (currentObject.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX)) {
                 currentObject.cheatGauge_value = 0;
+
+                var currentCustomer = currentObject.customers[currentObject.customer_index];
+                var babyAttributes = currentObject.babies[currentObject.baby_index].getAttributes();
+                var check = false;
+                var index = 0;
+
+                // find any of current baby's attribute that does not go through customer's need
+                while (!check && (index < babyAttributes.length - 1)) {
+
+                    if (!currentCustomer.checkElementAvailability(babyAttributes[index])) {
+
+                        var randomAttribute = new BabyTrader.Attribute();
+                        var checkRandom = false;
+
+                        while (!checkRandom) {
+                            if (currentCustomer.checkElementAvailability(randomAttribute) && !attributeArrayContainsTheElement(babyAttributes, randomAttribute)) {
+                                // update the attribute
+                                babyAttributes[index] = randomAttribute;
+
+                                // update the display
+                                BabyTrader.Play.displayBabies(currentObject, currentObject.baby_index);
+
+                                checkRandom = true;
+                            } else {
+                                randomAttribute = new BabyTrader.Attribute();
+                            }
+                        }
+                        check = true;
+                    } else {
+                        index++;
+                    }
+                }
             }
         }
 
@@ -222,46 +284,43 @@ module BabyTrader {
 
         increaseCheatGauge() {
             if (this.cheatGauge_value < BabyTrader.Const.CHEATGAUGE_MAX) {
-                this.cheatGauge_value = this.cheatGauge_value + 5;
+                this.cheatGauge_value = this.cheatGauge_value + 50;
             }
         }
 
-        reduceGameLevel() {
-            if (this.money_current < this.money_goal) {
-                this.gameLevel--;
-            }
-        }
-
-        removePlayScreen() {
-            this.text_money.destroy();
-            this.text_time.destroy();
+        static removePlayScreen(currentObject) {
+            currentObject.text_money.destroy();
+            currentObject.text_time.destroy();
         }
         
-        displayResultScreen() {
+        static displayResultScreen(currentObject) {
             var panelTitleSpriteName = 'resultScreen_titleSuccess';
             var goButtonSpriteName = 'resultScreen_nextLevelButton';
             var goButtonInvSpriteName = 'resultScreen_nextLevelButton_inv';
 
-            if (this.money_current < this.money_goal) {
+            if (currentObject.money_current < currentObject.money_goal) {
                 panelTitleSpriteName = 'resultScreen_titleFail';
                 goButtonSpriteName = 'resultScreen_tryAgainButton';
                 goButtonInvSpriteName = 'resultScreen_tryAgainButton_inv';
             }
 
-            this.gameMode = BabyTrader.Const.GAMEMODE_RESULT;
-            this.overlay = displaySolidBackground(this.game, this.overlay, BabyTrader.Const.GOAL_BACKGROUND, 1);
-            this.sprite_panel = displaySpriteOnScreen(this.game, this.sprite_panel, 'resultScreen_panel', 401, 252);
+            currentObject.gameMode = GameMode.Result;
+            currentObject.overlay = displaySolidBackground(currentObject.game, currentObject.overlay, BabyTrader.Const.GOAL_BACKGROUND, 1);
+            currentObject.sprite_panel = displaySpriteOnScreen(currentObject.game, currentObject.sprite_panel, 'resultScreen_panel', 401, 252);
 
-            this.sprite_panelTitle = displaySpriteOnScreen(this.game, this.sprite_panelTitle, panelTitleSpriteName, 393, 144);
+            currentObject.sprite_panelTitle = displaySpriteOnScreen(currentObject.game, currentObject.sprite_panelTitle, panelTitleSpriteName, 393, 144);
 
-            this.button_start = displaySpriteButtonOnScreen(this, this.button_start, goButtonSpriteName, goButtonInvSpriteName, BabyTrader.Play.removePanelDisplayScreen, 526, 487);
-            this.button_backToTitle = displaySpriteButtonOnScreen(this, this.button_backToTitle, 'resultScreen_backToTitleButton', 'resultScreen_backToTitleButton_inv', BabyTrader.Play.goBackToTitle, 292, 487);
+            currentObject.button_start = displaySpriteButtonOnScreen(currentObject, currentObject.button_start, goButtonSpriteName, goButtonInvSpriteName, BabyTrader.Play.removePanelDisplayScreen, 526, 487);
+            currentObject.button_backToTitle = displaySpriteButtonOnScreen(currentObject, currentObject.button_backToTitle, 'resultScreen_backToTitleButton', 'resultScreen_backToTitleButton_inv', BabyTrader.Play.goBackToTitle, 292, 487);
 
-            this.text_time = displayTextOnScreen(this.game, this.text_time, BabyTrader.Play.getTimeInFormat(this.gameTime_initial - this.gameTime), BabyTrader.Play.greenFontStyle, 564, 215, 1, 0);
-            this.text_money = displayTextOnScreen(this.game, this.text_money, '$' + String(this.money_current), BabyTrader.Play.greenFontStyle, 564, 281, 1, 0);
-            this.text_goal = displayTextOnScreen(this.game, this.text_goal, '$' + String(this.money_goal), BabyTrader.Play.greenFontStyle, 564, 347, 1, 0);
+            currentObject.text_time = displayTextOnScreen(currentObject.game, currentObject.text_time, BabyTrader.Play.getTimeInFormat(currentObject.gameTime_initial - currentObject.gameTime), BabyTrader.Play.greenFontStyle, 564, 215, 1, 0);
+            currentObject.text_money = displayTextOnScreen(currentObject.game, currentObject.text_money, '$' + String(currentObject.money_current), BabyTrader.Play.greenFontStyle, 564, 281, 1, 0);
+            currentObject.text_goal = displayTextOnScreen(currentObject.game, currentObject.text_goal, '$' + String(currentObject.money_goal), BabyTrader.Play.greenFontStyle, 564, 347, 1, 0);
 
-            this.reduceGameLevel();
+            // reduce game level
+            if (currentObject.money_current < currentObject.money_goal) {
+                currentObject.gameLevel--;
+            }
         }
 
         static removePanelDisplayScreen(currentObject) {
@@ -306,20 +365,22 @@ module BabyTrader {
 
         setupTimeAndMoney() {
             this.money_goal = (this.gameLevel * 20) + 100;
-            this.gameTime = 10 + (this.gameLevel * 10);
+            this.gameTime = 60 + (this.gameLevel * 10);
             this.gameTime_initial = this.gameTime;
             this.gameLevel++;
         }
         
         static pauseOrResumeGame(currentObject) {
-            if (!currentObject.pauseState) {
-                currentObject.pauseState = true;
-                currentObject.game.time.events.pause();
-                BabyTrader.Play.setButtonInputs(currentObject, false);
-            } else {
-                currentObject.pauseState = false;
-                currentObject.game.time.events.resume();
-                BabyTrader.Play.setButtonInputs(currentObject, true);
+            if (currentObject.gameMode == GameMode.Play) {
+                if (!currentObject.pauseState) {
+                    currentObject.pauseState = true;
+                    currentObject.game.time.events.pause();
+                    BabyTrader.Play.setButtonInputs(currentObject, false);
+                } else {
+                    currentObject.pauseState = false;
+                    currentObject.game.time.events.resume();
+                    BabyTrader.Play.setButtonInputs(currentObject, true);
+                }
             }
         }
 
@@ -332,7 +393,7 @@ module BabyTrader {
         }
 
         startGame() {
-            this.gameMode = BabyTrader.Const.GAMEMODE_PLAY;
+            this.gameMode = GameMode.Play;
             this.text_money = displayTextOnScreen(this.game, this.text_money, '', BabyTrader.Play.greenFontStyle, 461, 471, 1, 0);
             this.text_time = displayTextOnScreen(this.game, this.text_time, '', BabyTrader.Play.greenFontStyle, 572, 471, 1, 0);
 
@@ -348,7 +409,7 @@ module BabyTrader {
             this.initializeBabies();
             this.initializeCustomers();
             BabyTrader.Play.displayBabies(this, 0);
-            this.displayCustomers(0);
+            BabyTrader.Play.displayCustomers(this, 0);
             BabyTrader.Play.printDialog(this, this.customers[0].greet());
         }
 
@@ -364,7 +425,7 @@ module BabyTrader {
         }
 
         displayGoalScreen() {
-            this.gameMode = BabyTrader.Const.GAMEMODE_GOAL;
+            this.gameMode = GameMode.Goal;
             this.overlay = displaySolidBackground(this.game, this.overlay, BabyTrader.Const.GOAL_BACKGROUND, 1);
             this.sprite_panel = displaySpriteOnScreen(this.game, this.sprite_panel, 'goalScreen_panel', 401, 250);
             

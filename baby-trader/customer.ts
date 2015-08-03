@@ -8,9 +8,6 @@ Please see the file COPYING in the source distribution of this software for lice
 ****************************************************************************************/
 
 module BabyTrader {
-
-    enum CustomerStatus { Buy, Sell, Return }
-
     export class Customer {
         constructor() {
             this.attributes = insertAttributeToArrayAsSet(this.attributes, BabyTrader.Customer.attributes_max);
@@ -54,17 +51,6 @@ module BabyTrader {
 
         greet() {
             var returnString = BabyTrader.Customer.greetStrings[getRandomNumber(BabyTrader.Customer.greetStrings.length)] + BabyTrader.Customer.getSummedAttributeStrings(this.attributes, '?');
-            /*
-            this.attributes.forEach(function (attribute, index, array) {
-                returnString = returnString + " " + attribute.getDescription();
-                if (index < array.length - 1) {
-                    returnString = returnString + ",";
-                } else {
-                    returnString = returnString + "?";
-                }
-            });*/
-            
-
             return [returnString];
         }
 
@@ -90,8 +76,37 @@ module BabyTrader {
             return [BabyTrader.Customer.acceptStrings[getRandomNumber(BabyTrader.Customer.acceptStrings.length)]];
         }
 
-        checkAvailability(babyAttributes): boolean {
-            var returnCheck = false;
+        checkElementAvailability(babyAttribute): boolean {
+            var index = 0;
+            var check = false;
+
+            while (!check && (index < this.attributes.length - 1)) {
+                if (this.attributes[index].getName() == babyAttribute.getName()) {
+                    console.log(this.attributes[index].getName() + " " + babyAttribute.getName());
+                    check = true;
+                } else {
+                    index++;
+                }
+            }
+
+            return check;
+        }
+
+        checkElementsAvailability(babyAttributes): boolean {
+            var index = 0;
+            var check = false;
+
+            while (!check && (index < babyAttributes.length - 1)) {
+                if (this.checkElementAvailability(babyAttributes[index])) {
+                    check = true;
+                } else {
+                    index++;
+                }
+            }
+
+            return check;
+
+            /*var returnCheck = false;
             var eachCheck = false;
             var index = 0;
             var babyIndex = 0;
@@ -112,7 +127,7 @@ module BabyTrader {
                 }
             }
 
-            return returnCheck;
+            return returnCheck;*/
         }
     }
 }

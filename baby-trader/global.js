@@ -19,6 +19,19 @@ function stopBackgroundSound() {
     globalBgm.stop();
     globalBgm = null;
 }
+function attributeArrayContainsTheElement(array, element) {
+    var i = 0;
+    var check = false;
+    while (!check && (i < array.length - 1)) {
+        if (array[i].getName() == element.getName()) {
+            check = true;
+        }
+        else {
+            i++;
+        }
+    }
+    return check;
+}
 function insertAttributeToArrayAsSet(array, maxNumberToAdd) {
     var i = 0;
     while (i < maxNumberToAdd) {

@@ -24,8 +24,11 @@ var BabyTrader;
                 this.name = BabyTrader.Baby.names_female[getRandomNumber(BabyTrader.Baby.names_female.length)];
                 this.sprite = BabyTrader.Baby.sprites_female[getRandomNumber(BabyTrader.Baby.sprites_female.length)];
             }
-            this.month = getRandomNumber(BabyTrader.Baby.month_max);
+            this.month = getRandomNumber(BabyTrader.Baby.month_max) + 1;
             this.price = getRandomNumber(BabyTrader.Baby.price_max);
+            if (this.price <= 0) {
+                this.price = 1;
+            }
             this.attributes = new Array();
             this.attributes = insertAttributeToArrayAsSet(this.attributes, BabyTrader.Baby.attributes_max);
         }

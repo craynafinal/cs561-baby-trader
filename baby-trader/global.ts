@@ -28,7 +28,7 @@ function attributeArrayContainsTheElement(array, element) {
     var i = 0;
     var check = false;
 
-    while (!check && (i < array.length - 1)) {
+    while (!check && (i <= array.length - 1)) {
         if (array[i].getName() == element.getName()) {
             check = true;
         } else {

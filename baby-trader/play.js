@@ -73,8 +73,8 @@ var BabyTrader;
             // template
             this.sprite_template = displaySpriteOnScreen(this.game, this.sprite_template, 'template_template', 0, 0, 0, 0);
             var chatGaugeFunction = function (currentObject) {
-                if (currentObject.gameMode == GameMode.Play && (currentObject.cheatGauge_value < BabyTrader.Const.CHEATGAUGE_MAX)) {
-                    currentObject.cheatGauge_value = currentObject.cheatGauge_value + 5;
+                if (currentObject.gameMode === GameMode.Play && (currentObject.cheatGauge_value < BabyTrader.Const.CHEATGAUGE_MAX)) {
+                    currentObject.cheatGauge_value = currentObject.cheatGauge_value + 19;
                 }
             };
             // button setups
@@ -88,32 +88,32 @@ var BabyTrader;
             this.displayGoalScreen();
         };
         Play.prototype.update = function () {
-            if (this.gameMode == GameMode.Goal || this.gameMode == GameMode.Play) {
+            if (this.gameMode === GameMode.Goal || this.gameMode === GameMode.Play) {
                 this.updateText();
             }
-            if (this.gameMode == GameMode.Goal && this.isPreparationDone) {
+            if (this.gameMode === GameMode.Goal && this.isPreparationDone) {
                 this.isPreparationDone = false;
                 this.startGame();
             }
-            if (this.gameMode == GameMode.Play && (this.gameTime == 0 || this.money_current >= this.money_goal)) {
+            if (this.gameMode === GameMode.Play && (this.gameTime === 0 || this.money_current >= this.money_goal)) {
                 this.game.time.events.stop();
                 BabyTrader.Play.removePlayScreen(this);
                 BabyTrader.Play.displayResultScreen(this);
             }
-            if (this.gameMode == GameMode.Play && this.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX) {
+            if (this.gameMode === GameMode.Play && this.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX) {
             }
-            if (this.gameMode == GameMode.Play && this.cheatGauge_sprite) {
+            if (this.gameMode === GameMode.Play && this.cheatGauge_sprite) {
                 this.cheatGauge_sprite.destroy();
                 this.cheatGauge_sprite = displaySolidRectangular(this.game, this.cheatGauge_sprite, BabyTrader.Const.GREENCOLOR, 1, this.cheatGauge_value, 18, 245, 553);
             }
-            if (this.gameMode == GameMode.Result && this.isPreparationDone) {
+            if (this.gameMode === GameMode.Result && this.isPreparationDone) {
                 this.isPreparationDone = false;
                 this.setupTimeAndMoney();
                 this.displayGoalScreen();
             }
         };
         Play.businessButtonAction = function (currentObject) {
-            if (currentObject.gameMode == GameMode.Play) {
+            if (currentObject.gameMode === GameMode.Play) {
                 var currentCustomer = currentObject.customers[currentObject.customer_index];
                 var currentBaby = currentObject.babies[currentObject.baby_index];
                 if (currentCustomer.checkElementsAvailability(currentBaby.getAttributes())) {
@@ -121,7 +121,10 @@ var BabyTrader;
                     BabyTrader.Play.printDialog(currentObject, currentCustomer.accept());
                     if (currentObject.customer_index < currentObject.customers.length - 2) {
                         // more customers available
-                        BabyTrader.Play.displayCustomers(currentObject, currentObject.customer_index++);
+                        //BabyTrader.Play.displayCustomers(currentObject, currentObject.customer_index++);
+                        // remove current baby and reload
+                        currentObject.babies.splice(currentObject.baby_index, 1);
+                        BabyTrader.Play.displayBabies(currentObject, 0);
                     }
                     else {
                         // no more customers left, stop the game level
@@ -136,7 +139,7 @@ var BabyTrader;
             }
         };
         Play.displayNextBaby = function (currentObject) {
-            if (currentObject.gameMode == GameMode.Play) {
+            if (currentObject.gameMode === GameMode.Play) {
                 // mod operator not working?
                 if (currentObject.baby_index < currentObject.babies.length - 2) {
                     currentObject.baby_index++;
@@ -148,7 +151,7 @@ var BabyTrader;
             }
         };
         Play.displayPreviousBaby = function (currentObject) {
-            if (currentObject.gameMode == GameMode.Play) {
+            if (currentObject.gameMode === GameMode.Play) {
                 // mod operator not working?
                 if (currentObject.baby_index > 0) {
                     currentObject.baby_index--;
@@ -209,43 +212,37 @@ var BabyTrader;
             currentObject.text_babyAttributes = displayTextOnScreen(currentObject.game, currentObject.text_babyAttributes, attributeStrings.toUpperCase(), { font: "900 16px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, 520, 125, 0, 0);
         };
         Play.releaseTalentCheat = function (currentObject) {
-            if (currentObject.gameMode == GameMode.Play && (currentObject.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX)) {
+            if (currentObject.gameMode === GameMode.Play && (currentObject.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX)) {
                 currentObject.cheatGauge_value = 0;
                 var currentCustomer = currentObject.customers[currentObject.customer_index];
+                //var currentCustomerAttributes = new Array();
                 var babyAttributes = currentObject.babies[currentObject.baby_index].getAttributes();
                 var check = false;
                 var index = 0;
-                // find any of current baby's attribute that does not go through customer's need
-                while (!check && (index < babyAttributes.length - 1)) {
-                    if (!currentCustomer.checkElementAvailability(babyAttributes[index])) {
-                        var randomAttribute = new BabyTrader.Attribute();
-                        var checkRandom = false;
-                        while (!checkRandom) {
-                            if (currentCustomer.checkElementAvailability(randomAttribute) && !attributeArrayContainsTheElement(babyAttributes, randomAttribute)) {
-                                // update the attribute
-                                babyAttributes[index] = randomAttribute;
+                if (!currentCustomer.checkElementsAvailability(babyAttributes)) {
+                    while (!check && (index <= babyAttributes.length - 1)) {
+                        // find the element that is not needed, so it can be replaced
+                        if (!currentCustomer.checkElementAvailability(babyAttributes[index])) {
+                            // assign a new attribute if there is a missing attribute
+                            var missingAttribute = currentCustomer.getMissingAttribute(babyAttributes);
+                            if (missingAttribute) {
+                                babyAttributes[index] = missingAttribute;
                                 // update the display
                                 BabyTrader.Play.displayBabies(currentObject, currentObject.baby_index);
-                                checkRandom = true;
                             }
-                            else {
-                                randomAttribute = new BabyTrader.Attribute();
-                            }
+                            check = true;
                         }
-                        check = true;
-                    }
-                    else {
                         index++;
                     }
                 }
             }
         };
         Play.prototype.resetCheatGauge = function () {
-            this.cheatGauge_value = 5;
+            this.cheatGauge_value = 0;
         };
         Play.prototype.increaseCheatGauge = function () {
             if (this.cheatGauge_value < BabyTrader.Const.CHEATGAUGE_MAX) {
-                this.cheatGauge_value = this.cheatGauge_value + 50;
+                this.cheatGauge_value = this.cheatGauge_value + 19;
             }
         };
         Play.removePlayScreen = function (currentObject) {
@@ -321,7 +318,7 @@ var BabyTrader;
             this.gameLevel++;
         };
         Play.pauseOrResumeGame = function (currentObject) {
-            if (currentObject.gameMode == GameMode.Play) {
+            if (currentObject.gameMode === GameMode.Play) {
                 if (!currentObject.pauseState) {
                     currentObject.pauseState = true;
                     currentObject.game.time.events.pause();
@@ -372,8 +369,8 @@ var BabyTrader;
             this.sprite_panel = displaySpriteOnScreen(this.game, this.sprite_panel, 'goalScreen_panel', 401, 250);
             this.button_start = displaySpriteButtonOnScreen(this, this.button_start, 'goalScreen_startButton', 'goalScreen_startButton_inv', BabyTrader.Play.removePanelDisplayScreen, 526, 452);
             this.button_backToTitle = displaySpriteButtonOnScreen(this, this.button_backToTitle, 'goalScreen_backToTitleButton', 'goalScreen_backToTitleButton_inv', BabyTrader.Play.goBackToTitle, 263, 452);
-            this.text_money = displayTextOnScreen(this.game, this.text_money, '', BabyTrader.Play.greenFontStyle, 564, 246, 1, 0);
-            this.text_time = displayTextOnScreen(this.game, this.text_time, '', BabyTrader.Play.greenFontStyle, 564, 312, 1, 0);
+            this.text_money = displayTextOnScreen(this.game, this.text_money, '', BabyTrader.Play.greenFontStyle, 564, 312, 1, 0);
+            this.text_time = displayTextOnScreen(this.game, this.text_time, '', BabyTrader.Play.greenFontStyle, 564, 246, 1, 0);
         };
         Play.prototype.updateText = function () {
             if (this.text_money) {

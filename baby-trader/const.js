@@ -75,30 +75,6 @@ var BabyTrader;
             configurable: true
         });
         ;
-        Object.defineProperty(Const, "GAMEMODE_GOAL", {
-            get: function () {
-                return 0;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        ;
-        Object.defineProperty(Const, "GAMEMODE_PLAY", {
-            get: function () {
-                return 1;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        ;
-        Object.defineProperty(Const, "GAMEMODE_RESULT", {
-            get: function () {
-                return 2;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        ;
         Object.defineProperty(Const, "CHEATGAUGE_MAX", {
             get: function () {
                 return 190;

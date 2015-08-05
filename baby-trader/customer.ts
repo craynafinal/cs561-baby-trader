@@ -45,6 +45,10 @@ module BabyTrader {
             'customers_001'
         ];
 
+        getAttributes() {
+            return this.attributes;
+        }
+
         getSprite() {
             return this.sprite;
         }
@@ -80,13 +84,11 @@ module BabyTrader {
             var index = 0;
             var check = false;
 
-            while (!check && (index < this.attributes.length - 1)) {
-                if (this.attributes[index].getName() == babyAttribute.getName()) {
-                    console.log(this.attributes[index].getName() + " " + babyAttribute.getName());
+            while (!check && (index <= this.attributes.length - 1)) {
+                if (this.attributes[index].getName() === babyAttribute.getName()) {
                     check = true;
-                } else {
-                    index++;
                 }
+                index++;
             }
 
             return check;
@@ -94,40 +96,50 @@ module BabyTrader {
 
         checkElementsAvailability(babyAttributes): boolean {
             var index = 0;
-            var check = false;
+            var check = 0;
 
-            while (!check && (index < babyAttributes.length - 1)) {
+            // t t t f's case, even though everything is right, it becomes false
+            while ((check <= this.attributes.length - 1) && (index <= babyAttributes.length - 1)) {
+
+                // count match
                 if (this.checkElementAvailability(babyAttributes[index])) {
-                    check = true;
-                } else {
-                    index++;
-                }
+                    check++;
+                } 
+                index++;
             }
 
-            return check;
+            return check >= this.attributes.length ? true : false;
+        }
 
-            /*var returnCheck = false;
-            var eachCheck = false;
-            var index = 0;
-            var babyIndex = 0;
+        getMissingAttribute(babyAttributes) {
+            var i = 0;
+            var j = 0;
+            var check = false;
+            var checkInside = false;
+            var returnAttribute = null;
 
-            while (index < this.attributes.length) {
-                while (!eachCheck && (babyIndex < babyAttributes.length)) {
-                    if (this.attributes[index] == babyAttributes[babyIndex]) {
-                        eachCheck = true;
+            while (!check && (i <= this.attributes.length - 1)) {
+                // check if this attribute has a match in baby attributes
+                while (!checkInside && (j <= babyAttributes.length - 1)) {
+                    if (this.attributes[i].getName() === babyAttributes[j].getName()) {
+                        checkInside = true;
+                    } else {
+                        j++;
                     }
-                    babyIndex++;
                 }
 
-                if (eachCheck) {
-                    index++;
-                    babyIndex = 0;
+                // loop did not find match, that means this is the missing attribute
+                if (!checkInside) {
+                    check = true;
+                    returnAttribute = this.attributes[i];
                 } else {
-                    index = this.attributes.length + 1;
+                    checkInside = false;
+                    j = 0;
+                    i++;
                 }
             }
 
-            return returnCheck;*/
+            return returnAttribute;
         }
     }
 }

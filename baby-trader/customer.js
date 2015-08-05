@@ -15,6 +15,9 @@ var BabyTrader;
             this.attributes = insertAttributeToArrayAsSet(this.attributes, BabyTrader.Customer.attributes_max);
             this.sprite = BabyTrader.Customer.customerSprites[getRandomNumber(BabyTrader.Customer.customerSprites.length)];
         }
+        Customer.prototype.getAttributes = function () {
+            return this.attributes;
+        };
         Customer.prototype.getSprite = function () {
             return this.sprite;
         };
@@ -44,51 +47,55 @@ var BabyTrader;
         Customer.prototype.checkElementAvailability = function (babyAttribute) {
             var index = 0;
             var check = false;
-            while (!check && (index < this.attributes.length - 1)) {
-                if (this.attributes[index].getName() == babyAttribute.getName()) {
-                    console.log(this.attributes[index].getName() + " " + babyAttribute.getName());
+            while (!check && (index <= this.attributes.length - 1)) {
+                if (this.attributes[index].getName() === babyAttribute.getName()) {
                     check = true;
                 }
-                else {
-                    index++;
-                }
+                index++;
             }
             return check;
         };
         Customer.prototype.checkElementsAvailability = function (babyAttributes) {
             var index = 0;
-            var check = false;
-            while (!check && (index < babyAttributes.length - 1)) {
+            var check = 0;
+            // t t t f's case, even though everything is right, it becomes false
+            while ((check <= this.attributes.length - 1) && (index <= babyAttributes.length - 1)) {
+                // count match
                 if (this.checkElementAvailability(babyAttributes[index])) {
+                    check++;
+                }
+                index++;
+            }
+            return check >= this.attributes.length ? true : false;
+        };
+        Customer.prototype.getMissingAttribute = function (babyAttributes) {
+            var i = 0;
+            var j = 0;
+            var check = false;
+            var checkInside = false;
+            var returnAttribute = null;
+            while (!check && (i <= this.attributes.length - 1)) {
+                // check if this attribute has a match in baby attributes
+                while (!checkInside && (j <= babyAttributes.length - 1)) {
+                    if (this.attributes[i].getName() === babyAttributes[j].getName()) {
+                        checkInside = true;
+                    }
+                    else {
+                        j++;
+                    }
+                }
+                // loop did not find match, that means this is the missing attribute
+                if (!checkInside) {
                     check = true;
+                    returnAttribute = this.attributes[i];
                 }
                 else {
-                    index++;
+                    checkInside = false;
+                    j = 0;
+                    i++;
                 }
             }
-            return check;
-            /*var returnCheck = false;
-            var eachCheck = false;
-            var index = 0;
-            var babyIndex = 0;
-
-            while (index < this.attributes.length) {
-                while (!eachCheck && (babyIndex < babyAttributes.length)) {
-                    if (this.attributes[index] == babyAttributes[babyIndex]) {
-                        eachCheck = true;
-                    }
-                    babyIndex++;
-                }
-
-                if (eachCheck) {
-                    index++;
-                    babyIndex = 0;
-                } else {
-                    index = this.attributes.length + 1;
-                }
-            }
-
-            return returnCheck;*/
+            return returnAttribute;
         };
         Customer.attributes_max = 3;
         Customer.greetStrings = [

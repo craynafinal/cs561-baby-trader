@@ -62,18 +62,22 @@ module BabyTrader {
             var returnString = '';
 
             attributes.forEach(function (attribute, index, array) {
-                returnString = returnString + " " + attribute.getDescription();
-                if (index < array.length - 1) {
-                    returnString = returnString + ",";
-                } else {
-                    returnString = returnString + lastCharacter;
+
+                var endCharacter = ',';
+                var spacing = ' ';
+                
+                if (index >= array.length - 1) {
+                    endCharacter = lastCharacter;
+                    spacing = ' and ';
                 }
+
+                returnString = returnString + spacing + attribute.getDescription() + endCharacter;
             });
             return returnString;
         }
 
         reject() {
-            return [BabyTrader.Customer.rejectStrings[getRandomNumber(BabyTrader.Customer.rejectStrings.length)], BabyTrader.Customer.rejectRepeatStrings[getRandomNumber(BabyTrader.Customer.rejectRepeatStrings.length)] + BabyTrader.Customer.getSummedAttributeStrings(this.attributes, '?')];
+            return [BabyTrader.Customer.rejectStrings[getRandomNumber(BabyTrader.Customer.rejectStrings.length)], BabyTrader.Customer.rejectRepeatStrings[getRandomNumber(BabyTrader.Customer.rejectRepeatStrings.length)] + BabyTrader.Customer.getSummedAttributeStrings(this.attributes, '...')];
         }
 
         accept() {

@@ -7,13 +7,25 @@ This program is licensed under the MIT License.
 Please see the file COPYING in the source distribution of this software for license terms.
 ****************************************************************************************/
 var globalBgm = null;
+var globalSoundEffect_button = null;
+function setupButtonSoundEffect(game, sound) {
+    globalSoundEffect_button = game.add.audio(sound);
+    //globalSoundEffect_button.loop = false;
+    //globalSoundEffect_button[sound].volume = .3;
+}
+function playButtonSoundEffect() {
+    if (globalSoundEffect_button) {
+        globalSoundEffect_button.play();
+    }
+}
 function playBackgroundSound(game, music) {
     if (globalBgm != null) {
         stopBackgroundSound();
     }
     globalBgm = game.add.audio(music);
     globalBgm.loop = true;
-    //globalBgm.play();
+    globalBgm.volume = .3;
+    globalBgm.play();
 }
 function stopBackgroundSound() {
     globalBgm.stop();
@@ -94,6 +106,7 @@ function displaySpriteButtonOnScreen(currentObject, spriteObject, spriteName, sp
     spriteObject.input.useHandCursor = true;
     spriteObject.events.onInputDown.add(function () {
         spriteObject.loadTexture(spriteInvName);
+        playButtonSoundEffect();
     });
     spriteObject.events.onInputUp.add(function () {
         spriteObject.loadTexture(spriteName);

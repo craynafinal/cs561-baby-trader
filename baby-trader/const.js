@@ -19,7 +19,15 @@ var BabyTrader;
             configurable: true
         });
         ;
-        Object.defineProperty(Const, "PROLOGUE_BACKGROUND", {
+        Object.defineProperty(Const, "PROLOGUE_BACKGROUND_STRING", {
+            get: function () {
+                return this.color_darkGray_str;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ;
+        Object.defineProperty(Const, "TITLE_CREDITSTRINGCOLOR_STRING", {
             get: function () {
                 return this.color_darkGray_str;
             },

@@ -28,18 +28,18 @@ var BabyTrader;
         Customer.getSummedAttributeStrings = function (attributes, lastCharacter) {
             var returnString = '';
             attributes.forEach(function (attribute, index, array) {
-                returnString = returnString + " " + attribute.getDescription();
-                if (index < array.length - 1) {
-                    returnString = returnString + ",";
+                var endCharacter = ',';
+                var spacing = ' ';
+                if (index >= array.length - 1) {
+                    endCharacter = lastCharacter;
+                    spacing = ' and ';
                 }
-                else {
-                    returnString = returnString + lastCharacter;
-                }
+                returnString = returnString + spacing + attribute.getDescription() + endCharacter;
             });
             return returnString;
         };
         Customer.prototype.reject = function () {
-            return [BabyTrader.Customer.rejectStrings[getRandomNumber(BabyTrader.Customer.rejectStrings.length)], BabyTrader.Customer.rejectRepeatStrings[getRandomNumber(BabyTrader.Customer.rejectRepeatStrings.length)] + BabyTrader.Customer.getSummedAttributeStrings(this.attributes, '?')];
+            return [BabyTrader.Customer.rejectStrings[getRandomNumber(BabyTrader.Customer.rejectStrings.length)], BabyTrader.Customer.rejectRepeatStrings[getRandomNumber(BabyTrader.Customer.rejectRepeatStrings.length)] + BabyTrader.Customer.getSummedAttributeStrings(this.attributes, '...')];
         };
         Customer.prototype.accept = function () {
             return [BabyTrader.Customer.acceptStrings[getRandomNumber(BabyTrader.Customer.acceptStrings.length)]];

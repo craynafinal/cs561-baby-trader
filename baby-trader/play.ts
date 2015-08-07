@@ -53,6 +53,7 @@ module BabyTrader {
         private text_babyAttributes = null;
         private baby_index: number = 0;
         private customer_index: number = 0;
+        private static cheatGaugeTick: number = 19;
         
         preload() {
         }
@@ -72,7 +73,7 @@ module BabyTrader {
 
             var chatGaugeFunction = function (currentObject) {
                 if (currentObject.gameMode === GameMode.Play && (currentObject.cheatGauge_value < BabyTrader.Const.CHEATGAUGE_MAX)) {
-                    currentObject.cheatGauge_value = currentObject.cheatGauge_value + 19;
+                    currentObject.cheatGauge_value = currentObject.cheatGauge_value + BabyTrader.Play.cheatGaugeTick;
                 }
             }
 
@@ -104,18 +105,6 @@ module BabyTrader {
                 BabyTrader.Play.displayResultScreen(this);
             }
 
-            if (this.gameMode === GameMode.Play && this.cheatGauge_value >= BabyTrader.Const.CHEATGAUGE_MAX) {
-                //BabyTrader.Const.YELLOWCOLOR
-                //this.cheatGauge_sprite.graphicsData[0].fillColor = 0xffff00;
-
-                //console.log(this.cheatGauge_sprite.graphicsData[0]);
-
-                //this.cheatGauge_sprite.destroy();
-                //this.cheatGauge_sprite = displaySolidRectangular(this.game, this.cheatGauge_sprite, BabyTrader.Const.YELLOWCOLOR, 1, this.cheatGauge_value, 18, 245, 553);
-                //console.log();
-                //this.cheatGauge_sprite.graphicsData[0].tint = BabyTrader.Const.YELLOWCOLOR;
-            }
-
             if (this.gameMode === GameMode.Play && this.cheatGauge_sprite) {
                 this.cheatGauge_sprite.destroy();
                 this.cheatGauge_sprite = displaySolidRectangular(this.game, this.cheatGauge_sprite, BabyTrader.Const.GREENCOLOR, 1, this.cheatGauge_value, 18, 245, 553);
@@ -136,13 +125,26 @@ module BabyTrader {
                 if (currentCustomer.checkElementsAvailability(currentBaby.getAttributes())) {
                     currentObject.money_current += currentBaby.getPrice();
                     BabyTrader.Play.printDialog(currentObject, currentCustomer.accept());
-                    if (currentObject.customer_index < currentObject.customers.length - 2) {
-                        // more customers available
-                        //BabyTrader.Play.displayCustomers(currentObject, currentObject.customer_index++);
 
-                        // remove current baby and reload
-                        currentObject.babies.splice(currentObject.baby_index, 1);
-                        BabyTrader.Play.displayBabies(currentObject, 0);
+                    // disable buttons for a while
+                    BabyTrader.Play.setButtonInputs(currentObject, false);
+                    if (currentObject.customer_index <= currentObject.customers.length - 2) {
+
+                        currentObject.game.time.events.add(Phaser.Timer.SECOND * 4, function () {
+                            // more customers available
+                            BabyTrader.Play.displayCustomers(currentObject, currentObject.customer_index++);
+                            currentCustomer = currentObject.customers[currentObject.customer_index];
+                            
+                            BabyTrader.Play.printDialog(currentObject, currentCustomer.greet());
+
+
+                            // remove current baby and reload
+                            currentObject.babies.splice(currentObject.baby_index, 1);
+                            BabyTrader.Play.displayBabies(currentObject, 0);
+                            BabyTrader.Play.setButtonInputs(currentObject, true);
+                        }, this);
+
+                        // print new dialog
                     } else {
                         // no more customers left, stop the game level
                         currentObject.game.time.events.stop();
@@ -190,7 +192,7 @@ module BabyTrader {
 
         initializeCustomers() {
             this.customers = new Array();
-            for (var i = 0; i< (this.gameLevel + 2); i++) {
+            for (var i = 0; i< (this.gameLevel + 10); i++) {
                this.customers.push(new BabyTrader.Customer());
             }
 
@@ -200,6 +202,9 @@ module BabyTrader {
         }
 
         static displayCustomers(currentObject, index) {
+            if (currentObject.sprite_customer) {
+                currentObject.sprite_customer.destroy();
+            }
             currentObject.sprite_customer = displaySpriteOnScreen(currentObject.game, currentObject.sprite_customer, currentObject.customers[index].getSprite(), 109, 201);
         }
 
@@ -282,7 +287,7 @@ module BabyTrader {
 
         increaseCheatGauge() {
             if (this.cheatGauge_value < BabyTrader.Const.CHEATGAUGE_MAX) {
-                this.cheatGauge_value = this.cheatGauge_value + 19;
+                this.cheatGauge_value = this.cheatGauge_value + BabyTrader.Play.cheatGaugeTick;
             }
         }
 
@@ -362,6 +367,7 @@ module BabyTrader {
         }
 
         setupTimeAndMoney() {
+            this.money_current = 0;
             this.money_goal = (this.gameLevel * 20) + 100;
             this.gameTime = 60 + (this.gameLevel * 10);
             this.gameTime_initial = this.gameTime;
@@ -383,11 +389,19 @@ module BabyTrader {
         }
 
         static setButtonInputs(currentObject, trueOrFalse: boolean) {
+            // able to click it or not
             currentObject.button_arrowLeft.inputEnabled = trueOrFalse;
             currentObject.button_arrowRight.inputEnabled = trueOrFalse;
             currentObject.button_business.inputEnabled = trueOrFalse;
             currentObject.button_charge.inputEnabled = trueOrFalse;
             currentObject.button_talent.inputEnabled = trueOrFalse;
+
+            // handcursor mouse pointer
+            currentObject.button_arrowLeft.useHandCursor = trueOrFalse;
+            currentObject.button_arrowRight.useHandCursor = trueOrFalse;
+            currentObject.button_business.useHandCursor = trueOrFalse;
+            currentObject.button_charge.useHandCursor = trueOrFalse;
+            currentObject.button_talent.useHandCursor = trueOrFalse;
         }
 
         startGame() {
@@ -409,6 +423,7 @@ module BabyTrader {
             BabyTrader.Play.displayBabies(this, 0);
             BabyTrader.Play.displayCustomers(this, 0);
             BabyTrader.Play.printDialog(this, this.customers[0].greet());
+            BabyTrader.Play.setButtonInputs(this, true);
         }
 
         decrementSecond() {
@@ -436,7 +451,8 @@ module BabyTrader {
 
         updateText() {
             if (this.text_money) {
-                this.text_money.setText("$" + String(this.money_goal - this.money_current));
+                var money = (this.gameMode == GameMode.Play) ? String(this.money_goal - this.money_current) : this.money_goal;
+                this.text_money.setText("$" + money);
             }
 
             if (this.text_time) {

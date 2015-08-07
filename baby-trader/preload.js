@@ -24,11 +24,11 @@ var BabyTrader;
             this.game.load.onLoadComplete.addOnce(this.onLoadComplete, this);
             this.game.load.setPreloadSprite(this.preloadIcon);
             // sound effects
-            this.game.load.audio('se_babyCrying', 'assets/sounds/se_babyCrying.wav');
+            this.game.load.audio('se_buttonClick', 'assets/sounds/se_buttonClick.mp3');
             // bgm
-            this.game.load.audio('bgm_title', 'assets/sounds/bgm_title_kaniba.ogg');
-            this.game.load.audio('bgm_prologue', 'assets/sounds/bgm_prologue_k-sishou.ogg');
-            this.game.load.audio('bgm_play', 'assets/sounds/bgm_play_100.ogg');
+            this.game.load.audio('bgm_title', 'assets/sounds/bgm_usodarake.wav');
+            this.game.load.audio('bgm_prologue', 'assets/sounds/bgm_makkura.wav');
+            this.game.load.audio('bgm_play', 'assets/sounds/bgm_rihujin.wav');
             // fonts
             this.game.load.bitmapFont('carrier_command', 'assets/bitmapFonts/nokia.png', 'assets/bitmapFonts/nokia.xml');
             // sprites: title
@@ -77,9 +77,19 @@ var BabyTrader;
             this.game.load.image('template_talentButton', 'assets/sprites/template_talentButton_487x562.png');
             this.game.load.image('template_talentButton_inv', 'assets/sprites/template_talentButton_inv_487x562.png');
             this.game.load.image('template_template', 'assets/sprites/template_template_center.png');
+            // sprites: credits
+            this.game.load.image('credits_backToTitleButton', 'assets/sprites/credits_backToTitle_400x500.png');
+            this.game.load.image('credits_backToTitleButton_inv', 'assets/sprites/credits_backToTitle_400x500_inv.png');
+            this.game.load.image('credits_title', 'assets/sprites/credits_title_400x100.png');
+            // sprites: how to play
+            this.game.load.image('howToPlay_backToTitleButton', 'assets/sprites/howToPlay_backToTitle_400x532.png');
+            this.game.load.image('howToPlay_backToTitleButton_inv', 'assets/sprites/howToPlay_backToTitle_400x532_inv.png');
+            this.game.load.image('howToPlay_screenExample', 'assets/sprites/howToPlay_left_52x152.png');
+            this.game.load.image('howToPlay_title', 'assets/sprites/howToPlay_title_400x80.png');
         };
         Preload.prototype.create = function () {
             this.preloadIcon.cropEnabled = false;
+            setupButtonSoundEffect(this.game, 'se_buttonClick');
         };
         Preload.prototype.update = function () {
             if (this.ready) {

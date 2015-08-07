@@ -30,11 +30,14 @@ var BabyTrader;
             // skip key setup
             setupKeyboardHotkeys(this.game, this.key_skip, Phaser.Keyboard.ESC, function () { this.game.state.start("play"); }, this);
             // set the bg color
-            this.game.stage.backgroundColor = BabyTrader.Const.PROLOGUE_BACKGROUND;
+            this.game.stage.backgroundColor = BabyTrader.Const.PROLOGUE_BACKGROUND_STRING;
             // text printing start
             this.dialogLocation = displayTextOnScreen(this.game, this.dialogLocation, '', { font: "900 18px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "center" }, this.game.world.centerX, 500);
             // start prologue
             this.game.time.events.add(Phaser.Timer.SECOND * 1, this.startPrologue, this);
+            if (!this.game.time.events.running) {
+                this.game.time.events.start();
+            }
             // when the prologue texts are all printed, go to the next state
             this.game.time.events.onComplete.add(this.endPrologue, this);
         };

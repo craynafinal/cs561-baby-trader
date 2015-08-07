@@ -19,7 +19,11 @@ module BabyTrader {
             return this.color_lightGray_str;
         };
 
-        public static get PROLOGUE_BACKGROUND(): string {
+        public static get PROLOGUE_BACKGROUND_STRING(): string {
+            return this.color_darkGray_str;
+        };
+
+        public static get TITLE_CREDITSTRINGCOLOR_STRING(): string {
             return this.color_darkGray_str;
         };
 

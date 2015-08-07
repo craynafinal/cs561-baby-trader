@@ -41,7 +41,6 @@
     <TypeScriptCompile Include="phaser\pixi.d.ts" />
     <TypeScriptCompile Include="preload.ts" />
     <TypeScriptCompile Include="prologue.ts" />
-    <TypeScriptCompile Include="storage.ts" />
     <TypeScriptCompile Include="title.ts" />
   </ItemGroup>
   <ItemGroup>

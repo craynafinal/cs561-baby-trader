@@ -8,6 +8,19 @@ Please see the file COPYING in the source distribution of this software for lice
 ****************************************************************************************/
 
 var globalBgm = null;
+var globalSoundEffect_button = null;
+
+function setupButtonSoundEffect(game, sound: string) {
+    globalSoundEffect_button = game.add.audio(sound);
+    //globalSoundEffect_button.loop = false;
+    //globalSoundEffect_button[sound].volume = .3;
+}
+
+function playButtonSoundEffect() {
+    if (globalSoundEffect_button) {
+        globalSoundEffect_button.play();
+    }
+}
 
 function playBackgroundSound(game, music: string) {
     if (globalBgm != null) {
@@ -16,7 +29,8 @@ function playBackgroundSound(game, music: string) {
 
     globalBgm = game.add.audio(music);
     globalBgm.loop = true;
-    //globalBgm.play();
+    globalBgm.volume = .3;
+    globalBgm.play();
 }
 
 function stopBackgroundSound() {
@@ -83,6 +97,7 @@ function displayTextButtonOnScreen(currentObject, textObject, text: string, font
     textObject = displayTextOnScreen(currentObject.game, textObject, text, fontStyle, x, y, anchorX, anchorY);
     textObject.inputEnabled = true;
     textObject.input.useHandCursor = true;
+
     if (upMethod) {
         textObject.events.onInputUp.add(function () {
             upMethod(currentObject);
@@ -103,6 +118,7 @@ function displaySpriteButtonOnScreen(currentObject, spriteObject, spriteName: st
     spriteObject.input.useHandCursor = true;
     spriteObject.events.onInputDown.add(function () {
         spriteObject.loadTexture(spriteInvName);
+        playButtonSoundEffect();
     });
     spriteObject.events.onInputUp.add(function () {
         spriteObject.loadTexture(spriteName);

@@ -14,7 +14,16 @@ module BabyTrader {
                 "Welcome to my shop.",
                 "Please let me introduce my self.",
                 "I am the Baby Trader.",
-                "It is my honer to grant your wish."
+                "It is my pleasure to offer you a great deal.",
+                "Have you ever thought you would want to have your dream baby?",
+                "Since you visited me, I see you are quite disappointed with yours.",
+                "Do not worry anymore, I have babies you have been dreamed for...",
+                "They are in a condition beyond your expectations.",
+                "You want your baby to be a doctor in the future?",
+                "Or a most famous movie star in the world?",
+                "Any baby you can imagine is in my stock.",
+                "Please look around, I am sure you will find what you are looking for.",
+                "Thank you, and enjoy your stay..."
             ];
         };
 

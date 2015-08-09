@@ -56,7 +56,7 @@ module BabyTrader {
             var skipText = displayTextButtonOnScreen(this, skipText, 'Please click here or press ESC button to skip...'.toUpperCase(), { font: "900 12px Work Sans", fill: BabyTrader.Const.TEXTWHITEGRAYCOLOR_STRING, align: "left" }, skipFunction, 20, 20, 0, 0);
             
             // display illustration sprite and add tweens
-            this.prologueSprite = displaySpriteOnScreen(this.game, this.prologueSprite, 'prologue_babyTrader', this.game.world.centerX, this.game.world.centerY);
+            this.prologueSprite = displaySpriteOnScreen(this.game, this.prologueSprite, 'prologue_babyTrader', this.game.world.centerX, 265);
             addFadeTweenToSprite(this.game, this.prologueSprite, 0, 1, 1000);
 
             Dialog.startDialog(this.game, this.dialogLocation, Dialog.prologue);

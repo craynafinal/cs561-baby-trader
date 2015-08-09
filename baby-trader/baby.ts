@@ -39,8 +39,14 @@ module BabyTrader {
         private static attributes_max = 5;
         private static names_male = ['John', 'Jack', 'Jacob', 'Brandon', 'Brad', 'Harry', 'Ken', 'Andy', 'Doug', 'Chris', 'Scott'];
         private static names_female = ['Jamie', 'Rachel', 'Elizabeth', 'Clementine', 'Amy', 'Maria', 'Katherine', 'Tess', 'Aurora'];
-        private static sprites_male = ['babies_male_001'];
-        private static sprites_female = ['babies_male_001'];
+        private static sprites_male = [
+            'babies_male_001',
+            'babies_male_002',
+        ];
+        private static sprites_female = [
+            'babies_female_001',
+            'babies_female_002',
+        ];
         private static price_max = 100;
         private static month_max = 24;
 

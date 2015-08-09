@@ -42,7 +42,9 @@ module BabyTrader {
             "You have some nice goods, I like it."
         ];
         private static customerSprites = [
-            'customers_001'
+            'customers_001',
+            'customers_002',
+            'customers_003'
         ];
 
         getAttributes() {

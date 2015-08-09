@@ -135,6 +135,6 @@ function displaySolidRectangular(game, graphicObject, color, opacity, width, hei
     return graphicObject;
 }
 function getRandomNumber(max) {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * (max - .1));
 }
 //# sourceMappingURL=global.js.map

@@ -132,7 +132,7 @@ module BabyTrader {
 
                         currentObject.game.time.events.add(Phaser.Timer.SECOND * 4, function () {
                             // more customers available
-                            BabyTrader.Play.displayCustomers(currentObject, currentObject.customer_index++);
+                            BabyTrader.Play.displayCustomers(currentObject, ++currentObject.customer_index);
                             currentCustomer = currentObject.customers[currentObject.customer_index];
                             
                             BabyTrader.Play.printDialog(currentObject, currentCustomer.greet());

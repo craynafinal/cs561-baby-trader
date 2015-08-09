@@ -153,5 +153,5 @@ function displaySolidRectangular(game, graphicObject, color, opacity: number, wi
 
 
 function getRandomNumber(max: number): number {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * (max - .1));
 }

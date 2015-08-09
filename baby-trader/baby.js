@@ -50,8 +50,14 @@ var BabyTrader;
         Baby.attributes_max = 5;
         Baby.names_male = ['John', 'Jack', 'Jacob', 'Brandon', 'Brad', 'Harry', 'Ken', 'Andy', 'Doug', 'Chris', 'Scott'];
         Baby.names_female = ['Jamie', 'Rachel', 'Elizabeth', 'Clementine', 'Amy', 'Maria', 'Katherine', 'Tess', 'Aurora'];
-        Baby.sprites_male = ['babies_male_001'];
-        Baby.sprites_female = ['babies_male_001'];
+        Baby.sprites_male = [
+            'babies_male_001',
+            'babies_male_002',
+        ];
+        Baby.sprites_female = [
+            'babies_female_001',
+            'babies_female_002',
+        ];
         Baby.price_max = 100;
         Baby.month_max = 24;
         return Baby;

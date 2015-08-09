@@ -122,7 +122,7 @@ var BabyTrader;
                     if (currentObject.customer_index <= currentObject.customers.length - 2) {
                         currentObject.game.time.events.add(Phaser.Timer.SECOND * 4, function () {
                             // more customers available
-                            BabyTrader.Play.displayCustomers(currentObject, currentObject.customer_index++);
+                            BabyTrader.Play.displayCustomers(currentObject, ++currentObject.customer_index);
                             currentCustomer = currentObject.customers[currentObject.customer_index];
                             BabyTrader.Play.printDialog(currentObject, currentCustomer.greet());
                             // remove current baby and reload

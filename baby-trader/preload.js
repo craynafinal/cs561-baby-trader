@@ -42,11 +42,16 @@ var BabyTrader;
             this.game.load.image('startPage_startButton', 'assets/sprites/startPage_startButton_191x357.png');
             this.game.load.image('startPage_startButton_inv', 'assets/sprites/startPage_startButton_inv_191x357.png');
             // sprites: babies
-            this.game.load.image('babies_male_001', 'assets/sprites/baby_001.png');
+            this.game.load.image('babies_male_001', 'assets/sprites/baby_m_001.png');
+            this.game.load.image('babies_male_002', 'assets/sprites/baby_m_002.png');
+            this.game.load.image('babies_female_001', 'assets/sprites/baby_f_001.png');
+            this.game.load.image('babies_female_002', 'assets/sprites/baby_f_002.png');
             // sprites: customers
             this.game.load.image('customers_001', 'assets/sprites/customer_001.png');
+            this.game.load.image('customers_002', 'assets/sprites/customer_002.png');
+            this.game.load.image('customers_003', 'assets/sprites/customer_003.png');
             // sprites: prologue
-            this.game.load.image('prologue_babyTrader', 'assets/sprites/baby_001.png');
+            this.game.load.image('prologue_babyTrader', 'assets/sprites/prologue_babyTrader.png');
             // sprites: goal screen
             this.game.load.image('goalScreen_backToTitleButton', 'assets/sprites/goalScreen_backToTitleButton_263x452.png');
             this.game.load.image('goalScreen_backToTitleButton_inv', 'assets/sprites/goalScreen_backToTitleButton_inv_263x452.png');

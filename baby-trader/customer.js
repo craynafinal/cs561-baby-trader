@@ -123,7 +123,9 @@ var BabyTrader;
             "You have some nice goods, I like it."
         ];
         Customer.customerSprites = [
-            'customers_001'
+            'customers_001',
+            'customers_002',
+            'customers_003'
         ];
         return Customer;
     })();

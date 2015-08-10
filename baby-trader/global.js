@@ -10,8 +10,6 @@ var globalBgm = null;
 var globalSoundEffect_button = null;
 function setupButtonSoundEffect(game, sound) {
     globalSoundEffect_button = game.add.audio(sound);
-    //globalSoundEffect_button.loop = false;
-    //globalSoundEffect_button[sound].volume = .3;
 }
 function playButtonSoundEffect() {
     if (globalSoundEffect_button) {
@@ -134,7 +132,7 @@ function displaySolidRectangular(game, graphicObject, color, opacity, width, hei
     graphicObject.inputEnabled = true;
     return graphicObject;
 }
-function getRandomNumber(max) {
-    return Math.floor(Math.random() * (max - .1));
+function getRandomNumber(bound) {
+    return Math.floor(Math.random() * (bound - .1));
 }
 //# sourceMappingURL=global.js.map

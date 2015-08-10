@@ -12,8 +12,6 @@ var globalSoundEffect_button = null;
 
 function setupButtonSoundEffect(game, sound: string) {
     globalSoundEffect_button = game.add.audio(sound);
-    //globalSoundEffect_button.loop = false;
-    //globalSoundEffect_button[sound].volume = .3;
 }
 
 function playButtonSoundEffect() {
@@ -151,7 +149,6 @@ function displaySolidRectangular(game, graphicObject, color, opacity: number, wi
     return graphicObject;
 }
 
-
-function getRandomNumber(max: number): number {
-    return Math.floor(Math.random() * (max - .1));
+function getRandomNumber(bound: number): number {
+    return Math.floor(Math.random() * (bound - .1));
 }

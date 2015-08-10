@@ -15,8 +15,10 @@ The amount of money you need to make by selling babies and time given will show 
 Buy / Refund functionalities and animated sprites
 
 #Languages / Sources
-Typescript<br/>
-Phaserjs: phaser.io<br/>
+Typescript
+
+Phaserjs: phaser.io
+
 Rengoku Teien (Background Music): rengoku-teien.com
 
 #License
@@ -36,12 +38,18 @@ An initial game state, it is going to load a loading sprite for the next state.
 Constant values used for the development. Usually defines color code. Each methods are self descriptive.
 
 5) Customer
-Defines a customer. Like baby class, it will create an instance with randomly generated values. These will be a customer's sprite and needs.<br/>
-	- greet(): A greeting dialogue string will be returned.<br/>
-	- reject(): A reject dialogue string will be returned.<br/>
-	- accept(): An accept dialogue string will be returned.<br/>
-	- checkElementAvailability(babyAttribute): Check if given attribute exists in an instance.<br/>
-	- checkElementsAvailability(babyAttributes): Same as checkElementAvailability, but the parameter is an array of attributes.<br/>
+Defines a customer. Like baby class, it will create an instance with randomly generated values. These will be a customer's sprite and needs.
+
+	- greet(): A greeting dialogue string will be returned.  
+	
+	- reject(): A reject dialogue string will be returned.
+	
+	- accept(): An accept dialogue string will be returned.
+	
+	- checkElementAvailability(babyAttribute): Check if given attribute exists in an instance.
+	
+	- checkElementsAvailability(babyAttributes): Same as checkElementAvailability, but the parameter is an array of attributes.
+	
 	- getMissingAttribute(babyAttributes): Compare attributes between a baby's and a customer's and return first element that the baby is missing.
 	
 6) Dialog

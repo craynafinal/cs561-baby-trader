@@ -44,7 +44,13 @@ module BabyTrader {
         private static customerSprites = [
             'customers_001',
             'customers_002',
-            'customers_003'
+            'customers_003',
+            'customers_004',
+            'customers_005',
+            'customers_006',
+            'customers_007',
+            'customers_008',
+            'customers_009',
         ];
 
         getAttributes() {

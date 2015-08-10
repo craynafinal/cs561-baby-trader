@@ -53,10 +53,14 @@ var BabyTrader;
         Baby.sprites_male = [
             'babies_male_001',
             'babies_male_002',
+            'babies_male_003',
+            'babies_male_004',
         ];
         Baby.sprites_female = [
             'babies_female_001',
             'babies_female_002',
+            'babies_female_003',
+            'babies_female_004',
         ];
         Baby.price_max = 100;
         Baby.month_max = 24;

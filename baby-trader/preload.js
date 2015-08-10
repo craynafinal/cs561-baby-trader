@@ -44,12 +44,22 @@ var BabyTrader;
             // sprites: babies
             this.game.load.image('babies_male_001', 'assets/sprites/baby_m_001.png');
             this.game.load.image('babies_male_002', 'assets/sprites/baby_m_002.png');
+            this.game.load.image('babies_male_003', 'assets/sprites/baby_m_003.png');
+            this.game.load.image('babies_male_004', 'assets/sprites/baby_m_004.png');
             this.game.load.image('babies_female_001', 'assets/sprites/baby_f_001.png');
             this.game.load.image('babies_female_002', 'assets/sprites/baby_f_002.png');
+            this.game.load.image('babies_female_003', 'assets/sprites/baby_f_003.png');
+            this.game.load.image('babies_female_004', 'assets/sprites/baby_f_004.png');
             // sprites: customers
             this.game.load.image('customers_001', 'assets/sprites/customer_001.png');
             this.game.load.image('customers_002', 'assets/sprites/customer_002.png');
             this.game.load.image('customers_003', 'assets/sprites/customer_003.png');
+            this.game.load.image('customers_004', 'assets/sprites/customer_004.png');
+            this.game.load.image('customers_005', 'assets/sprites/customer_005.png');
+            this.game.load.image('customers_006', 'assets/sprites/customer_006.png');
+            this.game.load.image('customers_007', 'assets/sprites/customer_007.png');
+            this.game.load.image('customers_008', 'assets/sprites/customer_008.png');
+            this.game.load.image('customers_009', 'assets/sprites/customer_009.png');
             // sprites: prologue
             this.game.load.image('prologue_babyTrader', 'assets/sprites/prologue_babyTrader.png');
             // sprites: goal screen

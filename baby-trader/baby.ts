@@ -42,10 +42,14 @@ module BabyTrader {
         private static sprites_male = [
             'babies_male_001',
             'babies_male_002',
+            'babies_male_003',
+            'babies_male_004',
         ];
         private static sprites_female = [
             'babies_female_001',
             'babies_female_002',
+            'babies_female_003',
+            'babies_female_004',
         ];
         private static price_max = 100;
         private static month_max = 24;
